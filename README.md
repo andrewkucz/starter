@@ -2,6 +2,7 @@ Welcome to your new TanStack Start app!
 
 # My Starter Stack Deployment
 
+- All in on Vite+ (vp, oxlint)
 - All in on TanStack ecosystem (Start, Query, Form, Table)
 - Musts: Drizzle, Better Auth
 - All in on Netlify (Deployment, DB)
@@ -46,7 +47,7 @@ This project ships with `netlify.toml` configured for a Netlify site:
 4. Open **Site settings → Environment variables** and add anything from `.env.example` that needs a real value in production
 5. Trigger the first deploy
 
-Server functions and API routes run on Netlify Functions. For lower-latency request handling, see Netlify Edge Functions: https://docs.netlify.com/edge-functions/overview.
+Server functions and API routes run on Netlify Functions. Netlify automatically provisions the database and applies migrations from `netlify/database/migrations` during deploys. For lower-latency request handling, see Netlify Edge Functions: https://docs.netlify.com/edge-functions/overview.
 
 ## T3Env
 
@@ -79,12 +80,11 @@ Better Auth can work in stateless mode, but to persist user data, add a database
 ```typescript
 // src/lib/auth.ts
 import { betterAuth } from "better-auth";
-import { Pool } from "pg";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { db } from "#/db/index";
 
 export const auth = betterAuth({
-  database: new Pool({
-    connectionString: process.env.DATABASE_URL,
-  }),
+  database: drizzleAdapter(db, { provider: "pg" }),
   // ... rest of config
 });
 ```
@@ -95,14 +95,17 @@ Then run migrations:
 pnpm dlx @better-auth/cli migrate
 ```
 
-## Setting up Neon
+## Netlify Database
 
-When running the `dev` command, `vite-plugin-neon-new` will identify there is not a database setup. It will then create and seed a claimable database.
+The Drizzle client uses the native `drizzle-orm/netlify-db` adapter. Netlify chooses the appropriate PostgreSQL driver for local development and serverless production automatically, so no database connection environment variable is required.
 
-It is the same process as [Neon Launchpad](https://neon.new).
+Run the app with `vp dev`; the existing Netlify Vite plugin starts the local database. After changing `src/db/schema.ts`, generate a migration:
 
-> [!IMPORTANT]  
-> Claimable databases expire in 72 hours.
+```bash
+vp run db:generate
+```
+
+Apply it to the running local database with `vp run db:migrate`. On deploy, Netlify provisions the managed database and applies pending migrations automatically.
 
 ## Routing
 
@@ -255,3 +258,8 @@ Files prefixed with `demo` can be safely deleted. They are there to provide a st
 You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
 
 For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+
+# New project
+
+- define DB schema
+- clear and regenerate migrations

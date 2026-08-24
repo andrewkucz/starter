@@ -1,3 +1,4 @@
+import { defineRelations } from "drizzle-orm";
 import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const todos = pgTable("todos", {
@@ -5,3 +6,5 @@ export const todos = pgTable("todos", {
   title: text().notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+export const relations = defineRelations({ todos }, () => ({}));

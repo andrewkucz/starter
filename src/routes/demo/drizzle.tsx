@@ -7,15 +7,13 @@ import { todos } from "#/db/schema";
 const getTodos = createServerFn({
   method: "GET",
 }).handler(async () => {
-  return await db.query.todos.findMany({
-    orderBy: [desc(todos.createdAt)],
-  });
+  return await db.select().from(todos).orderBy(desc(todos.createdAt));
 });
 
 const createTodo = createServerFn({
   method: "POST",
 })
-  .inputValidator((data: { title: string }) => data)
+  .validator((data: { title: string }) => data)
   .handler(async ({ data }) => {
     await db.insert(todos).values({ title: data.title });
     return { success: true };
@@ -90,24 +88,24 @@ function DemoDrizzle() {
         </form>
 
         <div className="demo-card mt-8">
-          <h3 className="demo-section-title mb-2">Powered by Drizzle ORM</h3>
+          <h3 className="demo-section-title mb-2">Powered by Drizzle ORM and Netlify DB</h3>
           <p className="demo-muted mb-4 text-sm">
-            Next-generation ORM for Node.js & TypeScript with PostgreSQL
+            Type-safe PostgreSQL with a runtime-aware connection managed automatically by Netlify
           </p>
           <div className="space-y-2 text-sm">
             <p className="font-medium">Setup Instructions:</p>
             <ol className="demo-muted list-inside list-decimal space-y-2">
               <li>
-                Configure your <code>DATABASE_URL</code> in .env.local
+                Start the app with <code>vp dev</code> to run the local Netlify database
               </li>
               <li>
-                Run: <code>pnpm dlx drizzle-kit generate</code>
+                Generate schema changes with <code>vp run db:generate</code>
               </li>
               <li>
-                Run: <code>pnpm dlx drizzle-kit migrate</code>
+                Apply migrations locally with <code>vp run db:migrate</code>
               </li>
               <li>
-                Optional: <code>pnpm dlx drizzle-kit studio</code>
+                Deploy to let Netlify provision the database and apply migrations automatically
               </li>
             </ol>
           </div>

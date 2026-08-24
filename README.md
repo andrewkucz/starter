@@ -1,5 +1,11 @@
 Welcome to your new TanStack Start app!
 
+# My Starter Stack Deployment
+
+- All in on TanStack ecosystem (Start, Query, Form, Table)
+- Musts: Drizzle, Better Auth
+- All in on Netlify (Deployment, DB)
+
 # Getting Started
 
 To run this application:

@@ -13,6 +13,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "vp dlx --package netlify-cli netlify database migrations apply",
     "db:status": "vp dlx --package netlify-cli netlify database status",
+    "gen:auth": "NETLIFY_DB_URL=\"$(netlify database connect --json | jq -r .connection_string)\" vp dlx auth@latest generate --config src/lib/auth/server.ts --adapter drizzle --dialect postgresql --output ./src/db/auth.schema.ts",
     "prepare": "vp config"
   },
   "dependencies": {
@@ -32,6 +33,7 @@
     "@tanstack/react-table": "9.1.2",
     "better-auth": "^1.5.3",
     "drizzle-orm": "1.0.0-rc.4",
+    "pg": "^8.23.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.18",
@@ -43,6 +45,7 @@
     "@tanstack/devtools-vite": "0.8.5",
     "@tanstack/router-cli": "^1.132.0",
     "@types/node": "^22.10.2",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.1",

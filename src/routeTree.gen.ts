@@ -8,233 +8,482 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as AboutRouteImport } from "./routes/about";
-import { Route as DemoBetterAuthRouteImport } from "./routes/demo/better-auth";
-import { Route as DemoDrizzleRouteImport } from "./routes/demo/drizzle";
-import { Route as DemoTableRouteImport } from "./routes/demo/table";
-import { Route as DemoTanstackQueryRouteImport } from "./routes/demo/tanstack-query";
-import { Route as ApiAuthSplatRouteImport } from "./routes/api/auth/$";
-import { Route as DemoFormAddressRouteImport } from "./routes/demo/form.address";
-import { Route as DemoFormSimpleRouteImport } from "./routes/demo/form.simple";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteRouteImport } from './routes/app/route'
+import { Route as ManagerRouteRouteImport } from './routes/manager/route'
+import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as ManagerIndexRouteImport } from './routes/manager/index'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AppAccountIndexRouteImport } from './routes/app/account.index'
+import { Route as AppBooksIndexRouteImport } from './routes/app/books/index'
+import { Route as ManagerAccountIndexRouteImport } from './routes/manager/account.index'
+import { Route as ManagerBooksIndexRouteImport } from './routes/manager/books/index'
+import { Route as ManagerDashboardIndexRouteImport } from './routes/manager/dashboard.index'
+import { Route as ManagerUsersIndexRouteImport } from './routes/manager/users/index'
+import { Route as AppBooksIdIndexRouteImport } from './routes/app/books/$id.index'
+import { Route as ManagerBooksIdIndexRouteImport } from './routes/manager/books/$id.index'
+import { Route as ManagerBooksNewIndexRouteImport } from './routes/manager/books/new.index'
+import { Route as ManagerUsersIdIndexRouteImport } from './routes/manager/users/$id.index'
+import { Route as ManagerUsersNewIndexRouteImport } from './routes/manager/users/new.index'
+import { Route as ManagerBooksIdUpdateIndexRouteImport } from './routes/manager/books/$id.update.index'
+import { Route as ManagerUsersIdUpdateIndexRouteImport } from './routes/manager/users/$id.update.index'
 
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
-const AboutRoute = AboutRouteImport.update({
-  id: "/about",
-  path: "/about",
+} as any)
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
-} as any);
-const DemoBetterAuthRoute = DemoBetterAuthRouteImport.update({
-  id: "/demo/better-auth",
-  path: "/demo/better-auth",
+} as any)
+const ManagerRouteRoute = ManagerRouteRouteImport.update({
+  id: '/manager',
+  path: '/manager',
   getParentRoute: () => rootRouteImport,
-} as any);
-const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
-  id: "/demo/drizzle",
-  path: "/demo/drizzle",
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
-} as any);
-const DemoTableRoute = DemoTableRouteImport.update({
-  id: "/demo/table",
-  path: "/demo/table",
-  getParentRoute: () => rootRouteImport,
-} as any);
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: "/demo/tanstack-query",
-  path: "/demo/tanstack-query",
-  getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
+const ManagerIndexRoute = ManagerIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ManagerRouteRoute,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: "/api/auth/$",
-  path: "/api/auth/$",
+  id: '/api/auth/$',
+  path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
-} as any);
-const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
-  id: "/demo/form/address",
-  path: "/demo/form/address",
-  getParentRoute: () => rootRouteImport,
-} as any);
-const DemoFormSimpleRoute = DemoFormSimpleRouteImport.update({
-  id: "/demo/form/simple",
-  path: "/demo/form/simple",
-  getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
+const AppAccountIndexRoute = AppAccountIndexRouteImport.update({
+  id: '/account/',
+  path: '/account/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppBooksIndexRoute = AppBooksIndexRouteImport.update({
+  id: '/books/',
+  path: '/books/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const ManagerAccountIndexRoute = ManagerAccountIndexRouteImport.update({
+  id: '/account/',
+  path: '/account/',
+  getParentRoute: () => ManagerRouteRoute,
+} as any)
+const ManagerBooksIndexRoute = ManagerBooksIndexRouteImport.update({
+  id: '/books/',
+  path: '/books/',
+  getParentRoute: () => ManagerRouteRoute,
+} as any)
+const ManagerDashboardIndexRoute = ManagerDashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => ManagerRouteRoute,
+} as any)
+const ManagerUsersIndexRoute = ManagerUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => ManagerRouteRoute,
+} as any)
+const AppBooksIdIndexRoute = AppBooksIdIndexRouteImport.update({
+  id: '/books/$id/',
+  path: '/books/$id/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const ManagerBooksIdIndexRoute = ManagerBooksIdIndexRouteImport.update({
+  id: '/books/$id/',
+  path: '/books/$id/',
+  getParentRoute: () => ManagerRouteRoute,
+} as any)
+const ManagerBooksNewIndexRoute = ManagerBooksNewIndexRouteImport.update({
+  id: '/books/new/',
+  path: '/books/new/',
+  getParentRoute: () => ManagerRouteRoute,
+} as any)
+const ManagerUsersIdIndexRoute = ManagerUsersIdIndexRouteImport.update({
+  id: '/users/$id/',
+  path: '/users/$id/',
+  getParentRoute: () => ManagerRouteRoute,
+} as any)
+const ManagerUsersNewIndexRoute = ManagerUsersNewIndexRouteImport.update({
+  id: '/users/new/',
+  path: '/users/new/',
+  getParentRoute: () => ManagerRouteRoute,
+} as any)
+const ManagerBooksIdUpdateIndexRoute =
+  ManagerBooksIdUpdateIndexRouteImport.update({
+    id: '/books/$id/update/',
+    path: '/books/$id/update/',
+    getParentRoute: () => ManagerRouteRoute,
+  } as any)
+const ManagerUsersIdUpdateIndexRoute =
+  ManagerUsersIdUpdateIndexRouteImport.update({
+    id: '/users/$id/update/',
+    path: '/users/$id/update/',
+    getParentRoute: () => ManagerRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/demo/better-auth": typeof DemoBetterAuthRoute;
-  "/demo/drizzle": typeof DemoDrizzleRoute;
-  "/demo/table": typeof DemoTableRoute;
-  "/demo/tanstack-query": typeof DemoTanstackQueryRoute;
-  "/api/auth/$": typeof ApiAuthSplatRoute;
-  "/demo/form/address": typeof DemoFormAddressRoute;
-  "/demo/form/simple": typeof DemoFormSimpleRoute;
+  '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
+  '/manager': typeof ManagerRouteRouteWithChildren
+  '/app/': typeof AppIndexRoute
+  '/login/': typeof LoginIndexRoute
+  '/manager/': typeof ManagerIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/app/account/': typeof AppAccountIndexRoute
+  '/app/books/': typeof AppBooksIndexRoute
+  '/manager/account/': typeof ManagerAccountIndexRoute
+  '/manager/books/': typeof ManagerBooksIndexRoute
+  '/manager/dashboard/': typeof ManagerDashboardIndexRoute
+  '/manager/users/': typeof ManagerUsersIndexRoute
+  '/app/books/$id/': typeof AppBooksIdIndexRoute
+  '/manager/books/$id/': typeof ManagerBooksIdIndexRoute
+  '/manager/books/new/': typeof ManagerBooksNewIndexRoute
+  '/manager/users/$id/': typeof ManagerUsersIdIndexRoute
+  '/manager/users/new/': typeof ManagerUsersNewIndexRoute
+  '/manager/books/$id/update/': typeof ManagerBooksIdUpdateIndexRoute
+  '/manager/users/$id/update/': typeof ManagerUsersIdUpdateIndexRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/demo/better-auth": typeof DemoBetterAuthRoute;
-  "/demo/drizzle": typeof DemoDrizzleRoute;
-  "/demo/table": typeof DemoTableRoute;
-  "/demo/tanstack-query": typeof DemoTanstackQueryRoute;
-  "/api/auth/$": typeof ApiAuthSplatRoute;
-  "/demo/form/address": typeof DemoFormAddressRoute;
-  "/demo/form/simple": typeof DemoFormSimpleRoute;
+  '/': typeof IndexRoute
+  '/app': typeof AppIndexRoute
+  '/login': typeof LoginIndexRoute
+  '/manager': typeof ManagerIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/app/account': typeof AppAccountIndexRoute
+  '/app/books': typeof AppBooksIndexRoute
+  '/manager/account': typeof ManagerAccountIndexRoute
+  '/manager/books': typeof ManagerBooksIndexRoute
+  '/manager/dashboard': typeof ManagerDashboardIndexRoute
+  '/manager/users': typeof ManagerUsersIndexRoute
+  '/app/books/$id': typeof AppBooksIdIndexRoute
+  '/manager/books/$id': typeof ManagerBooksIdIndexRoute
+  '/manager/books/new': typeof ManagerBooksNewIndexRoute
+  '/manager/users/$id': typeof ManagerUsersIdIndexRoute
+  '/manager/users/new': typeof ManagerUsersNewIndexRoute
+  '/manager/books/$id/update': typeof ManagerBooksIdUpdateIndexRoute
+  '/manager/users/$id/update': typeof ManagerUsersIdUpdateIndexRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/demo/better-auth": typeof DemoBetterAuthRoute;
-  "/demo/drizzle": typeof DemoDrizzleRoute;
-  "/demo/table": typeof DemoTableRoute;
-  "/demo/tanstack-query": typeof DemoTanstackQueryRoute;
-  "/api/auth/$": typeof ApiAuthSplatRoute;
-  "/demo/form/address": typeof DemoFormAddressRoute;
-  "/demo/form/simple": typeof DemoFormSimpleRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
+  '/manager': typeof ManagerRouteRouteWithChildren
+  '/app/': typeof AppIndexRoute
+  '/login/': typeof LoginIndexRoute
+  '/manager/': typeof ManagerIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/app/account/': typeof AppAccountIndexRoute
+  '/app/books/': typeof AppBooksIndexRoute
+  '/manager/account/': typeof ManagerAccountIndexRoute
+  '/manager/books/': typeof ManagerBooksIndexRoute
+  '/manager/dashboard/': typeof ManagerDashboardIndexRoute
+  '/manager/users/': typeof ManagerUsersIndexRoute
+  '/app/books/$id/': typeof AppBooksIdIndexRoute
+  '/manager/books/$id/': typeof ManagerBooksIdIndexRoute
+  '/manager/books/new/': typeof ManagerBooksNewIndexRoute
+  '/manager/users/$id/': typeof ManagerUsersIdIndexRoute
+  '/manager/users/new/': typeof ManagerUsersNewIndexRoute
+  '/manager/books/$id/update/': typeof ManagerBooksIdUpdateIndexRoute
+  '/manager/users/$id/update/': typeof ManagerUsersIdUpdateIndexRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/about"
-    | "/demo/better-auth"
-    | "/demo/drizzle"
-    | "/demo/table"
-    | "/demo/tanstack-query"
-    | "/api/auth/$"
-    | "/demo/form/address"
-    | "/demo/form/simple";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/app'
+    | '/manager'
+    | '/app/'
+    | '/login/'
+    | '/manager/'
+    | '/api/auth/$'
+    | '/app/account/'
+    | '/app/books/'
+    | '/manager/account/'
+    | '/manager/books/'
+    | '/manager/dashboard/'
+    | '/manager/users/'
+    | '/app/books/$id/'
+    | '/manager/books/$id/'
+    | '/manager/books/new/'
+    | '/manager/users/$id/'
+    | '/manager/users/new/'
+    | '/manager/books/$id/update/'
+    | '/manager/users/$id/update/'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/about"
-    | "/demo/better-auth"
-    | "/demo/drizzle"
-    | "/demo/table"
-    | "/demo/tanstack-query"
-    | "/api/auth/$"
-    | "/demo/form/address"
-    | "/demo/form/simple";
+    | '/'
+    | '/app'
+    | '/login'
+    | '/manager'
+    | '/api/auth/$'
+    | '/app/account'
+    | '/app/books'
+    | '/manager/account'
+    | '/manager/books'
+    | '/manager/dashboard'
+    | '/manager/users'
+    | '/app/books/$id'
+    | '/manager/books/$id'
+    | '/manager/books/new'
+    | '/manager/users/$id'
+    | '/manager/users/new'
+    | '/manager/books/$id/update'
+    | '/manager/users/$id/update'
   id:
-    | "__root__"
-    | "/"
-    | "/about"
-    | "/demo/better-auth"
-    | "/demo/drizzle"
-    | "/demo/table"
-    | "/demo/tanstack-query"
-    | "/api/auth/$"
-    | "/demo/form/address"
-    | "/demo/form/simple";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/manager'
+    | '/app/'
+    | '/login/'
+    | '/manager/'
+    | '/api/auth/$'
+    | '/app/account/'
+    | '/app/books/'
+    | '/manager/account/'
+    | '/manager/books/'
+    | '/manager/dashboard/'
+    | '/manager/users/'
+    | '/app/books/$id/'
+    | '/manager/books/$id/'
+    | '/manager/books/new/'
+    | '/manager/users/$id/'
+    | '/manager/users/new/'
+    | '/manager/books/$id/update/'
+    | '/manager/users/$id/update/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AboutRoute: typeof AboutRoute;
-  DemoBetterAuthRoute: typeof DemoBetterAuthRoute;
-  DemoDrizzleRoute: typeof DemoDrizzleRoute;
-  DemoTableRoute: typeof DemoTableRoute;
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute;
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
-  DemoFormAddressRoute: typeof DemoFormAddressRoute;
-  DemoFormSimpleRoute: typeof DemoFormSimpleRoute;
+  IndexRoute: typeof IndexRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
+  ManagerRouteRoute: typeof ManagerRouteRouteWithChildren
+  LoginIndexRoute: typeof LoginIndexRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/about": {
-      id: "/about";
-      path: "/about";
-      fullPath: "/about";
-      preLoaderRoute: typeof AboutRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/demo/better-auth": {
-      id: "/demo/better-auth";
-      path: "/demo/better-auth";
-      fullPath: "/demo/better-auth";
-      preLoaderRoute: typeof DemoBetterAuthRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/demo/drizzle": {
-      id: "/demo/drizzle";
-      path: "/demo/drizzle";
-      fullPath: "/demo/drizzle";
-      preLoaderRoute: typeof DemoDrizzleRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/demo/table": {
-      id: "/demo/table";
-      path: "/demo/table";
-      fullPath: "/demo/table";
-      preLoaderRoute: typeof DemoTableRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/demo/tanstack-query": {
-      id: "/demo/tanstack-query";
-      path: "/demo/tanstack-query";
-      fullPath: "/demo/tanstack-query";
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/api/auth/$": {
-      id: "/api/auth/$";
-      path: "/api/auth/$";
-      fullPath: "/api/auth/$";
-      preLoaderRoute: typeof ApiAuthSplatRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/demo/form/address": {
-      id: "/demo/form/address";
-      path: "/demo/form/address";
-      fullPath: "/demo/form/address";
-      preLoaderRoute: typeof DemoFormAddressRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/demo/form/simple": {
-      id: "/demo/form/simple";
-      path: "/demo/form/simple";
-      fullPath: "/demo/form/simple";
-      preLoaderRoute: typeof DemoFormSimpleRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manager': {
+      id: '/manager'
+      path: '/manager'
+      fullPath: '/manager'
+      preLoaderRoute: typeof ManagerRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login/'
+      preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manager/': {
+      id: '/manager/'
+      path: '/'
+      fullPath: '/manager/'
+      preLoaderRoute: typeof ManagerIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/account/': {
+      id: '/app/account/'
+      path: '/account'
+      fullPath: '/app/account/'
+      preLoaderRoute: typeof AppAccountIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/books/': {
+      id: '/app/books/'
+      path: '/books'
+      fullPath: '/app/books/'
+      preLoaderRoute: typeof AppBooksIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/manager/account/': {
+      id: '/manager/account/'
+      path: '/account'
+      fullPath: '/manager/account/'
+      preLoaderRoute: typeof ManagerAccountIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/manager/books/': {
+      id: '/manager/books/'
+      path: '/books'
+      fullPath: '/manager/books/'
+      preLoaderRoute: typeof ManagerBooksIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/manager/dashboard/': {
+      id: '/manager/dashboard/'
+      path: '/dashboard'
+      fullPath: '/manager/dashboard/'
+      preLoaderRoute: typeof ManagerDashboardIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/manager/users/': {
+      id: '/manager/users/'
+      path: '/users'
+      fullPath: '/manager/users/'
+      preLoaderRoute: typeof ManagerUsersIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/app/books/$id/': {
+      id: '/app/books/$id/'
+      path: '/books/$id'
+      fullPath: '/app/books/$id/'
+      preLoaderRoute: typeof AppBooksIdIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/manager/books/$id/': {
+      id: '/manager/books/$id/'
+      path: '/books/$id'
+      fullPath: '/manager/books/$id/'
+      preLoaderRoute: typeof ManagerBooksIdIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/manager/books/new/': {
+      id: '/manager/books/new/'
+      path: '/books/new'
+      fullPath: '/manager/books/new/'
+      preLoaderRoute: typeof ManagerBooksNewIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/manager/users/$id/': {
+      id: '/manager/users/$id/'
+      path: '/users/$id'
+      fullPath: '/manager/users/$id/'
+      preLoaderRoute: typeof ManagerUsersIdIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/manager/users/new/': {
+      id: '/manager/users/new/'
+      path: '/users/new'
+      fullPath: '/manager/users/new/'
+      preLoaderRoute: typeof ManagerUsersNewIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/manager/books/$id/update/': {
+      id: '/manager/books/$id/update/'
+      path: '/books/$id/update'
+      fullPath: '/manager/books/$id/update/'
+      preLoaderRoute: typeof ManagerBooksIdUpdateIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
+    '/manager/users/$id/update/': {
+      id: '/manager/users/$id/update/'
+      path: '/users/$id/update'
+      fullPath: '/manager/users/$id/update/'
+      preLoaderRoute: typeof ManagerUsersIdUpdateIndexRouteImport
+      parentRoute: typeof ManagerRouteRoute
+    }
   }
 }
 
+interface AppRouteRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+  AppAccountIndexRoute: typeof AppAccountIndexRoute
+  AppBooksIndexRoute: typeof AppBooksIndexRoute
+  AppBooksIdIndexRoute: typeof AppBooksIdIndexRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+  AppAccountIndexRoute: AppAccountIndexRoute,
+  AppBooksIndexRoute: AppBooksIndexRoute,
+  AppBooksIdIndexRoute: AppBooksIdIndexRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
+interface ManagerRouteRouteChildren {
+  ManagerIndexRoute: typeof ManagerIndexRoute
+  ManagerAccountIndexRoute: typeof ManagerAccountIndexRoute
+  ManagerBooksIndexRoute: typeof ManagerBooksIndexRoute
+  ManagerDashboardIndexRoute: typeof ManagerDashboardIndexRoute
+  ManagerUsersIndexRoute: typeof ManagerUsersIndexRoute
+  ManagerBooksIdIndexRoute: typeof ManagerBooksIdIndexRoute
+  ManagerBooksNewIndexRoute: typeof ManagerBooksNewIndexRoute
+  ManagerUsersIdIndexRoute: typeof ManagerUsersIdIndexRoute
+  ManagerUsersNewIndexRoute: typeof ManagerUsersNewIndexRoute
+  ManagerBooksIdUpdateIndexRoute: typeof ManagerBooksIdUpdateIndexRoute
+  ManagerUsersIdUpdateIndexRoute: typeof ManagerUsersIdUpdateIndexRoute
+}
+
+const ManagerRouteRouteChildren: ManagerRouteRouteChildren = {
+  ManagerIndexRoute: ManagerIndexRoute,
+  ManagerAccountIndexRoute: ManagerAccountIndexRoute,
+  ManagerBooksIndexRoute: ManagerBooksIndexRoute,
+  ManagerDashboardIndexRoute: ManagerDashboardIndexRoute,
+  ManagerUsersIndexRoute: ManagerUsersIndexRoute,
+  ManagerBooksIdIndexRoute: ManagerBooksIdIndexRoute,
+  ManagerBooksNewIndexRoute: ManagerBooksNewIndexRoute,
+  ManagerUsersIdIndexRoute: ManagerUsersIdIndexRoute,
+  ManagerUsersNewIndexRoute: ManagerUsersNewIndexRoute,
+  ManagerBooksIdUpdateIndexRoute: ManagerBooksIdUpdateIndexRoute,
+  ManagerUsersIdUpdateIndexRoute: ManagerUsersIdUpdateIndexRoute,
+}
+
+const ManagerRouteRouteWithChildren = ManagerRouteRoute._addFileChildren(
+  ManagerRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  DemoBetterAuthRoute: DemoBetterAuthRoute,
-  DemoDrizzleRoute: DemoDrizzleRoute,
-  DemoTableRoute: DemoTableRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
+  ManagerRouteRoute: ManagerRouteRouteWithChildren,
+  LoginIndexRoute: LoginIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  DemoFormAddressRoute: DemoFormAddressRoute,
-  DemoFormSimpleRoute: DemoFormSimpleRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from "./router.tsx";
-import type { createStart } from "@tanstack/react-start";
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true;
-    router: Awaited<ReturnType<typeof getRouter>>;
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
   }
 }

@@ -4,11 +4,11 @@ import { ArrowLeftIcon, CheckIcon } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 
-import { Page, PageContent, PageHeader, PageTitle } from "#/components/layout/page-layout";
-import { Button, buttonVariants } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
-import { Field, FieldError, Input, Label, Select } from "#/components/ui/form-controls";
-import type { User } from "#/data/catalog";
+import { Page, PageContent, PageHeader, PageTitle } from "@/components/layout/page-layout";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Field, FieldError, Input, Label, Select } from "@/components/ui/form-controls";
+import type { User } from "@/data/users/types";
 
 const userSchema = z.object({
   name: z.string().min(1, "Name is required"),

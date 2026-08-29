@@ -1,14 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeftIcon } from "lucide-react";
 
-import { Page, PageContent, PageHeader, PageTitle } from "#/components/layout/page-layout";
-import { buttonVariants } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
-import { getBook } from "#/data/catalog";
-import { BookCover } from "#/features/books/book-cover";
+import { Page, PageContent, PageHeader, PageTitle } from "@/components/layout/page-layout";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import type { Book } from "@/data/books/types";
+import { BookCover } from "@/features/books/book-cover";
 
-export function PageBook({ id }: { id: string }) {
-  const book = getBook(id);
+export function PageBook({ book }: { book: Book | null }) {
   if (!book)
     return (
       <Page>

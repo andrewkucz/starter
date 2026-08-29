@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getUser } from "#/data/catalog";
-import { FormUserPage } from "#/features/manager/form-user-page";
-export const Route = createFileRoute("/manager/users/$id/update/")({ component: RouteComponent });
+import { getUser } from "@/data/users/server";
+import { FormUserPage } from "@/features/manager/form-user-page";
+export const Route = createFileRoute("/manager/users/$id/update/")({
+  loader: ({ params }) => getUser({ data: { id: params.id } }),
+  component: RouteComponent,
+});
 function RouteComponent() {
-  return <FormUserPage user={getUser(Route.useParams().id)} />;
+  return <FormUserPage user={Route.useLoaderData()} />;
 }

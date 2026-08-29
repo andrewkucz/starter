@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 
-import type { Book } from "#/data/catalog";
-import { cn } from "#/lib/utils";
+import type { Book } from "@/data/books/types";
+import { cn } from "@/lib/utils";
 
 export type BookCoverProps = ComponentProps<"div"> & {
   book: Pick<Book, "title" | "author" | "genre">;

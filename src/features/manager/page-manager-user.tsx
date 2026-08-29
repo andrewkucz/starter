@@ -1,16 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeftIcon, LaptopIcon, PencilIcon, SmartphoneIcon } from "lucide-react";
+import { ArrowLeftIcon, LaptopIcon, PencilIcon } from "lucide-react";
 
-import { Page, PageContent, PageHeader, PageTitle } from "#/components/layout/page-layout";
-import { Avatar } from "#/components/ui/avatar";
-import { Badge } from "#/components/ui/badge";
-import { buttonVariants } from "#/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
-import { getUser } from "#/data/catalog";
-import { cn } from "#/lib/utils";
+import { Page, PageContent, PageHeader, PageTitle } from "@/components/layout/page-layout";
+import { Avatar } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { User } from "@/data/users/types";
+import { cn } from "@/lib/utils";
 
-export function PageManagerUser({ id }: { id: string }) {
-  const user = getUser(id);
+export function PageManagerUser({ user }: { user: User | null }) {
   if (!user)
     return (
       <Page>
@@ -37,7 +36,7 @@ export function PageManagerUser({ id }: { id: string }) {
         actions={
           <Link
             to="/manager/users/$id/update"
-            params={{ id }}
+            params={{ id: user.id }}
             className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "no-underline")}
           >
             <PencilIcon />
@@ -71,23 +70,25 @@ export function PageManagerUser({ id }: { id: string }) {
             <CardTitle className="text-sm">Active sessions</CardTitle>
           </CardHeader>
           <CardContent className="divide-y p-0">
-            <div className="flex items-center gap-3 px-5 py-4">
-              <LaptopIcon className="size-5 text-muted-foreground" />
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium">Chrome on macOS</p>
-                <p className="text-xs text-muted-foreground">
-                  Current session · New York, United States
-                </p>
-              </div>
-              <Badge variant="positive">Active</Badge>
-            </div>
-            <div className="flex items-center gap-3 px-5 py-4">
-              <SmartphoneIcon className="size-5 text-muted-foreground" />
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium">Safari on iPhone</p>
-                <p className="text-xs text-muted-foreground">Last active 2 days ago</p>
-              </div>
-            </div>
+            {user.sessions.length ? (
+              user.sessions.map((session) => (
+                <div key={session.id} className="flex items-center gap-3 px-5 py-4">
+                  <LaptopIcon className="size-5 text-muted-foreground" />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium">
+                      {session.userAgent ?? "Unknown browser"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Last active {session.updatedAt.toLocaleDateString()}
+                      {session.ipAddress ? ` · ${session.ipAddress}` : ""}
+                    </p>
+                  </div>
+                  {session.expiresAt > new Date() ? <Badge variant="positive">Active</Badge> : null}
+                </div>
+              ))
+            ) : (
+              <p className="px-5 py-6 text-sm text-muted-foreground">No active sessions.</p>
+            )}
           </CardContent>
         </Card>
       </PageContent>

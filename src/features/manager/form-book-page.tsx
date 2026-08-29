@@ -4,12 +4,12 @@ import { ArrowLeftIcon, CheckIcon } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 
-import { Page, PageContent, PageHeader, PageTitle } from "#/components/layout/page-layout";
-import { Button, buttonVariants } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
-import { Field, FieldError, Input, Label, Select, Textarea } from "#/components/ui/form-controls";
-import type { Book } from "#/data/catalog";
-import { genres } from "#/data/catalog";
+import { Page, PageContent, PageHeader, PageTitle } from "@/components/layout/page-layout";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Field, FieldError, Input, Label, Select, Textarea } from "@/components/ui/form-controls";
+import type { Book } from "@/data/books/types";
+import type { Genre } from "@/data/genres/types";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -30,13 +30,13 @@ function ErrorFor({ errors }: { errors: Array<unknown> }) {
   );
 }
 
-export function FormBookPage({ book }: { book?: Book }) {
+export function FormBookPage({ book, genres }: { book?: Book | null; genres: Array<Genre> }) {
   const [saved, setSaved] = useState(false);
   const form = useForm({
     defaultValues: {
       title: book?.title ?? "",
       author: book?.author ?? "",
-      genreId: book?.genre.id ?? genres[0]!.id,
+      genreId: book?.genre.id ?? genres[0]?.id ?? "",
       publisher: book?.publisher ?? "",
       publishedAt: book?.publishedAt ?? "",
       description: book?.description ?? "",

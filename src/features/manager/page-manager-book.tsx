@@ -1,15 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeftIcon, PencilIcon } from "lucide-react";
 
-import { Page, PageContent, PageHeader, PageTitle } from "#/components/layout/page-layout";
-import { buttonVariants } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
-import { getBook } from "#/data/catalog";
-import { BookCover } from "#/features/books/book-cover";
-import { cn } from "#/lib/utils";
+import { Page, PageContent, PageHeader, PageTitle } from "@/components/layout/page-layout";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import type { Book } from "@/data/books/types";
+import { BookCover } from "@/features/books/book-cover";
+import { cn } from "@/lib/utils";
 
-export function PageManagerBook({ id }: { id: string }) {
-  const book = getBook(id);
+export function PageManagerBook({ book }: { book: Book | null }) {
   if (!book)
     return (
       <Page>
@@ -36,7 +35,7 @@ export function PageManagerBook({ id }: { id: string }) {
         actions={
           <Link
             to="/manager/books/$id/update"
-            params={{ id }}
+            params={{ id: book.id }}
             className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "no-underline")}
           >
             <PencilIcon />

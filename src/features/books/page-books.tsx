@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 
-import { Page, PageContent, PageHeader, PageTitle } from "#/components/layout/page-layout";
-import { books } from "#/data/catalog";
-import { BookCover } from "#/features/books/book-cover";
+import { Page, PageContent, PageHeader, PageTitle } from "@/components/layout/page-layout";
+import type { Book } from "@/data/books/types";
+import { BookCover } from "@/features/books/book-cover";
 
-export function PageBooks() {
+export function PageBooks({ books }: { books: Array<Book> }) {
   return (
     <Page>
       <PageHeader>

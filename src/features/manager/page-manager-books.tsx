@@ -1,15 +1,21 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { PlusIcon, SearchIcon } from "lucide-react";
 
-import { Page, PageContent, PageHeader, PageTitle } from "#/components/layout/page-layout";
-import { buttonVariants } from "#/components/ui/button";
-import { DataList, DataListCell, DataListRow } from "#/components/ui/data-list";
-import { Input } from "#/components/ui/form-controls";
-import { books } from "#/data/catalog";
-import { BookCover } from "#/features/books/book-cover";
-import { cn } from "#/lib/utils";
+import { Page, PageContent, PageHeader, PageTitle } from "@/components/layout/page-layout";
+import { buttonVariants } from "@/components/ui/button";
+import { DataList, DataListCell, DataListRow } from "@/components/ui/data-list";
+import { Input } from "@/components/ui/form-controls";
+import type { Book } from "@/data/books/types";
+import { BookCover } from "@/features/books/book-cover";
+import { cn } from "@/lib/utils";
 
-export function PageManagerBooks({ searchTerm = "" }: { searchTerm?: string }) {
+export function PageManagerBooks({
+  books,
+  searchTerm = "",
+}: {
+  books: Array<Book>;
+  searchTerm?: string;
+}) {
   const navigate = useNavigate();
   const items = books.filter((book) =>
     `${book.title} ${book.author} ${book.publisher}`

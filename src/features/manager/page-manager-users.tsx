@@ -1,16 +1,22 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { PlusIcon, SearchIcon } from "lucide-react";
 
-import { Page, PageContent, PageHeader, PageTitle } from "#/components/layout/page-layout";
-import { Avatar } from "#/components/ui/avatar";
-import { Badge } from "#/components/ui/badge";
-import { buttonVariants } from "#/components/ui/button";
-import { DataList, DataListCell, DataListRow } from "#/components/ui/data-list";
-import { Input } from "#/components/ui/form-controls";
-import { users } from "#/data/catalog";
-import { cn } from "#/lib/utils";
+import { Page, PageContent, PageHeader, PageTitle } from "@/components/layout/page-layout";
+import { Avatar } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { DataList, DataListCell, DataListRow } from "@/components/ui/data-list";
+import { Input } from "@/components/ui/form-controls";
+import type { User } from "@/data/users/types";
+import { cn } from "@/lib/utils";
 
-export function PageManagerUsers({ searchTerm = "" }: { searchTerm?: string }) {
+export function PageManagerUsers({
+  users,
+  searchTerm = "",
+}: {
+  users: Array<User>;
+  searchTerm?: string;
+}) {
   const navigate = useNavigate();
   const items = users.filter((user) =>
     `${user.name} ${user.email} ${user.role}`.toLowerCase().includes(searchTerm.toLowerCase()),

@@ -1,22 +1,31 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRightIcon, BookOpenIcon, UserCheckIcon, UsersIcon } from "lucide-react";
 
-import { Page, PageContent, PageHeader, PageTitle } from "#/components/layout/page-layout";
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
-import { books, users } from "#/data/catalog";
+import { Page, PageContent, PageHeader, PageTitle } from "@/components/layout/page-layout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Book } from "@/data/books/types";
 
-const stats = [
-  { label: "Books", value: books.length, icon: BookOpenIcon, to: "/manager/books" as const },
-  { label: "Users", value: users.length, icon: UsersIcon, to: "/manager/users" as const },
-  {
-    label: "Onboarded",
-    value: users.filter((user) => user.onboarded).length,
-    icon: UserCheckIcon,
-    to: "/manager/users" as const,
-  },
-];
-
-export function PageDashboard() {
+export function PageDashboard({
+  bookCount,
+  userCount,
+  onboardedCount,
+  recentBooks,
+}: {
+  bookCount: number;
+  userCount: number;
+  onboardedCount: number;
+  recentBooks: Array<Book>;
+}) {
+  const stats = [
+    { label: "Books", value: bookCount, icon: BookOpenIcon, to: "/manager/books" as const },
+    { label: "Users", value: userCount, icon: UsersIcon, to: "/manager/users" as const },
+    {
+      label: "Onboarded",
+      value: onboardedCount,
+      icon: UserCheckIcon,
+      to: "/manager/users" as const,
+    },
+  ];
   return (
     <Page>
       <PageHeader>
@@ -50,7 +59,7 @@ export function PageDashboard() {
             <CardTitle>Recently added books</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-3 sm:grid-cols-2">
-            {books.slice(0, 4).map((book) => (
+            {recentBooks.map((book) => (
               <Link
                 key={book.id}
                 to="/manager/books/$id"

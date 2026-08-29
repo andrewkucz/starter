@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageManagerBook } from "#/features/manager/page-manager-book";
-export const Route = createFileRoute("/manager/books/$id/")({ component: RouteComponent });
+import { getBook } from "@/data/books/server";
+import { PageManagerBook } from "@/features/manager/page-manager-book";
+export const Route = createFileRoute("/manager/books/$id/")({
+  loader: ({ params }) => getBook({ data: { id: params.id } }),
+  component: RouteComponent,
+});
 function RouteComponent() {
-  return <PageManagerBook id={Route.useParams().id} />;
+  return <PageManagerBook book={Route.useLoaderData()} />;
 }

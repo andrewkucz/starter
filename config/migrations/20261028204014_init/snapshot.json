@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "e7e1d982-12e3-4f32-8b11-d5a8bca68aad",
+  "id": "83e9f7e6-967e-44a8-926d-e3720a3c061c",
   "prevIds": ["00000000-0000-0000-0000-000000000000"],
   "ddl": [
     {
@@ -43,19 +43,6 @@
       "generated": null,
       "identity": null,
       "name": "id",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "account"
-    },
-    {
-      "type": "text",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "issuer",
       "entityType": "columns",
       "schema": "public",
       "table": "account"
@@ -631,34 +618,6 @@
       "entityType": "columns",
       "schema": "public",
       "table": "tasks"
-    },
-    {
-      "nameExplicit": true,
-      "columns": [
-        {
-          "value": "issuer",
-          "isExpression": false,
-          "asc": true,
-          "nullsFirst": false,
-          "opclass": null
-        },
-        {
-          "value": "account_id",
-          "isExpression": false,
-          "asc": true,
-          "nullsFirst": false,
-          "opclass": null
-        }
-      ],
-      "isUnique": true,
-      "where": null,
-      "with": "",
-      "method": "btree",
-      "concurrently": false,
-      "name": "account_issuer_accountId_uidx",
-      "entityType": "indexes",
-      "schema": "public",
-      "table": "account"
     },
     {
       "nameExplicit": true,

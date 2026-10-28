@@ -1,18 +1,19 @@
 # Production deployment (e.g. Dokploy with Docker Compose).
 # - Environment: set INFISICAL_PROJECT_ID / INFISICAL_CLIENT_ID / INFISICAL_CLIENT_SECRET
-#   (production machine identity with access to Infisical `prod`) and POSTGRES_PASSWORD; the
-#   platform writes them to the .env used below.
+#   (production machine identity with access to Infisical `prod`), POSTGRES_PASSWORD and
+#   _VARLOCK_ENV_KEY (`varlock generate-key --plain`); the platform writes them to the .env used below.
 # - Domains: route your public domain to the `web` service on port 3000 (keep BETTER_AUTH_URL in
 #   config/env/.env.production in sync).
-# The app container resolves its own config with varlock at startup (Infisical + config/env/.env.production).
+# Config is resolved once while building the images (Infisical + config/env/.env.production) and
+# encrypted with _VARLOCK_ENV_KEY; at runtime the app containers only need that key. Rotating a
+# secret takes effect on the next deploy (rebuild), not on restart.
 
 # Shared by `migrate` and `web`.
+x-app-build-secrets: &app-build-secrets
+  - build_env
+  - varlock_key
 x-app-environment: &app-environment
-  APP_ENV: production
-  INFISICAL_PROJECT_ID: ${INFISICAL_PROJECT_ID:?}
-  INFISICAL_CLIENT_ID: ${INFISICAL_CLIENT_ID:?}
-  INFISICAL_CLIENT_SECRET: ${INFISICAL_CLIENT_SECRET:?}
-  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+  _VARLOCK_ENV_KEY: ${_VARLOCK_ENV_KEY:?}
 
 services:
   # Applies pending migrations, then exits; `web` starts only if it succeeds.
@@ -20,6 +21,7 @@ services:
     build:
       context: .
       target: migrate
+      secrets: *app-build-secrets
     image: starter-migrate:latest
     restart: "no"
     init: true
@@ -32,8 +34,7 @@ services:
     build:
       context: .
       target: runtime
-      secrets:
-        - build_env
+      secrets: *app-build-secrets
     image: starter:latest
     restart: unless-stopped
     init: true
@@ -75,6 +76,9 @@ secrets:
   # Deployment credentials are written here; mount only during the build step.
   build_env:
     file: .env
+  # Encrypts the resolved config during the build (it must be a real env var, never read from .env files).
+  varlock_key:
+    environment: _VARLOCK_ENV_KEY
 
 volumes:
   postgres-data:

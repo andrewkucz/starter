@@ -23,3 +23,4 @@ peerDependencyRules:
     vite: "*"
 minimumReleaseAgeExclude:
   - lucide-react@1.63.0
+  - akstack@0.2.0

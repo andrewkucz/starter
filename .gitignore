@@ -21,6 +21,7 @@ todos.json
 !.env.development
 !.env.test
 !.env.production
+.varlock-frozen-env
 
 tmp
 

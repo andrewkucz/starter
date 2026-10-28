@@ -9,7 +9,7 @@
     "build": "vp build",
     "start": "node .output/server/index.mjs",
     "preview": "vp preview",
-    "services:up": "scripts/local-services.sh",
+    "services:up": "bin/local-services.sh",
     "db:generate": "drizzle-kit generate --config config/drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config config/drizzle.config.ts",
     "gen:auth": "APP_ENV=test auth generate --config src/lib/auth/server-client.ts --output ./src/db/auth.schema.ts --yes",

@@ -1,9 +1,9 @@
 services:
   postgres:
     image: postgres:18-alpine
-    # Keep in sync with DATABASE_URL in .env.development.
+    # Keep in sync with DATABASE_URL in env/.env.development.
     environment:
-      POSTGRES_DB: starter
+      POSTGRES_DB: app
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:

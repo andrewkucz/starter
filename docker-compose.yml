@@ -3,8 +3,8 @@
 #   (production machine identity with access to Infisical `prod`) and POSTGRES_PASSWORD; the
 #   platform writes them to the .env used below.
 # - Domains: route your public domain to the `web` service on port 3000 (keep BETTER_AUTH_URL in
-#   .env.production in sync).
-# The app container resolves its own config with varlock at startup (Infisical + .env.production).
+#   config/env/.env.production in sync).
+# The app container resolves its own config with varlock at startup (Infisical + config/env/.env.production).
 
 # Shared by `migrate` and `web`.
 x-app-environment: &app-environment

@@ -12,7 +12,7 @@ FROM deps AS build
 COPY . .
 # Mount deployment credentials only for this step; the env file is not stored in a layer.
 # All config is dynamic, and the SSR build uses init-only injection.
-RUN --mount=type=secret,id=build_env,target=/app/.env,required=true \
+RUN --mount=type=secret,id=build_env,target=/app/config/env/.env,required=true \
   APP_ENV=production node_modules/.bin/vp run build
 
 FROM base AS prod-deps
@@ -23,7 +23,8 @@ RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 # devDependency, so this uses the full install; drizzle.config.ts resolves env via varlock.
 FROM deps AS migrate
 ENV NODE_ENV=production APP_ENV=production
-COPY --chown=node:node package.json .env.schema .env.production ./
+COPY --chown=node:node package.json ./
+COPY --chown=node:node config/env/.env.schema config/env/.env.production config/env/
 COPY --chown=node:node src/env.d.ts src/env.d.ts
 COPY --chown=node:node config/drizzle.config.ts config/drizzle.config.ts
 COPY --chown=node:node config/migrations config/migrations
@@ -37,7 +38,8 @@ COPY --chown=node:node --from=prod-deps /app/node_modules node_modules
 COPY --chown=node:node --from=build /app/.output .output
 # Varlock skips rewriting unchanged types; include the generated file for runtime loads.
 COPY --chown=node:node --from=build /app/src/env.d.ts src/env.d.ts
-COPY --chown=node:node package.json .env.schema .env.production ./
+COPY --chown=node:node package.json ./
+COPY --chown=node:node config/env/.env.schema config/env/.env.production config/env/
 USER node
 EXPOSE 3000
 # Web server; `varlock run` resolves env before any SSR chunk evaluates.

@@ -85,5 +85,8 @@
       "@tanstack/*",
       "drizzle-kit"
     ]
+  },
+  "varlock": {
+    "loadPath": "./config/env/"
   }
 }

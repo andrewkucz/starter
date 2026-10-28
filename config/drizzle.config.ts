@@ -1,4 +1,3 @@
-// Resolves env (.env.schema) itself, so drizzle-kit needs no `varlock run` wrapper.
 import "varlock/auto-load";
 
 import { defineConfig } from "drizzle-kit";

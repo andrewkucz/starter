@@ -4,7 +4,7 @@ import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 
-export const APP_NAME = "Starter";
+export const APP_NAME = "Acme";
 
 export function LogoIcon({ className, ...props }: ComponentProps<"span">) {
   return (

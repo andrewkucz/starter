@@ -17,7 +17,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
-      { name: "description", content: "A TanStack Start starter application." },
+      { name: "description", content: `${APP_NAME}, built with TanStack Start.` },
       { name: "apple-mobile-web-app-title", content: APP_NAME },
       { name: "theme-color", content: "#fff" },
     ],

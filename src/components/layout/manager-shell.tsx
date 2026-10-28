@@ -224,7 +224,7 @@ export function ManagerShell() {
 
     setExpanded((open) => {
       const nextOpen = !open;
-      document.cookie = `manager_sidebar=${nextOpen}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}; samesite=lax`;
+      document.cookie = `acme_sidebar=${nextOpen}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}; samesite=lax`;
 
       return nextOpen;
     });
@@ -233,7 +233,7 @@ export function ManagerShell() {
   useEffect(() => {
     const storedState = document.cookie
       .split("; ")
-      .find((cookie) => cookie.startsWith("manager_sidebar="))
+      .find((cookie) => cookie.startsWith("acme_sidebar="))
       ?.split("=")[1];
 
     if (storedState) setExpanded(storedState === "true");

@@ -4,7 +4,7 @@ import { del, get, set } from "idb-keyval";
 
 export const PERSISTED_QUERY_CACHE_MAX_AGE = 60 * 60 * 1000; // 1 hour
 
-const storageKey = "app-data-cache";
+const storageKey = "acme-query-cache";
 
 interface QueryMeta extends Record<string, unknown> {
   /** Opt a query into the IndexedDB cache that survives page reloads. */

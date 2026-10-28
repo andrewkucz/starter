@@ -10,7 +10,7 @@ export type UserTheme = z.infer<typeof UserThemeSchema>;
 
 export type AppTheme = z.infer<typeof AppThemeSchema>;
 
-const themeStorageKey = "theme";
+const themeStorageKey = "acme-theme";
 const prefersDarkMediaQuery = "(prefers-color-scheme: dark)";
 
 const getStoredUserTheme = createIsomorphicFn()
@@ -56,7 +56,7 @@ const setupPreferredListener = createClientOnlyFn(() => {
 const themeScript: string = (function () {
   function themeFn() {
     try {
-      const storedTheme = localStorage.getItem("theme") || "system";
+      const storedTheme = localStorage.getItem("acme-theme") || "system";
       const validTheme = ["light", "dark", "system"].includes(storedTheme) ? storedTheme : "system";
 
       if (validTheme === "system") {

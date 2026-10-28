@@ -18,6 +18,7 @@ const socialProviders = {
 };
 
 export const auth = betterAuth({
+  appName: "Acme",
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
@@ -37,6 +38,10 @@ export const auth = betterAuth({
       enabled: true,
       allowDifferentEmails: true,
     },
+  },
+  advanced: {
+    // Namespaced so apps sharing a host (e.g. localhost) don't share auth cookies.
+    cookiePrefix: "acme",
   },
   plugins: [admin({ ac, roles, defaultRole: "user" }), tanstackStartCookies()],
 });

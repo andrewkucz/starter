@@ -1,6 +1,6 @@
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
-
+import { getPublicDynamicEnv, setPublicDynamicEnv } from "varlock/env";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 import { getContext } from "@/lib/server/context";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
@@ -16,6 +16,12 @@ export function getRouter() {
     scrollRestoration: true,
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
+    dehydrate: () => ({
+      publicDynamicEnv: getPublicDynamicEnv(),
+    }),
+    hydrate: (dehydrated) => {
+      setPublicDynamicEnv(dehydrated.publicDynamicEnv);
+    },
     Wrap: ({ children }) => (
       <PersistQueryClientProvider client={context.queryClient} persistOptions={persistOptions}>
         {children}

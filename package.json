@@ -7,7 +7,7 @@
     "dev": "vp dev",
     "generate-routes": "tsr generate",
     "build": "vp build",
-    "start": "node --import varlock/auto-load .output/server/index.mjs",
+    "start": "varlock run -- node .output/server/index.mjs",
     "preview": "vp preview",
     "services:up": "scripts/local-services.sh",
     "db:generate": "drizzle-kit generate --config config/drizzle.config.ts",

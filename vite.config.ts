@@ -1,5 +1,3 @@
-import { readFileSync } from "node:fs";
-
 import { defineConfig, lazyPlugins } from "vite-plus";
 import { devtools } from "@tanstack/devtools-vite";
 
@@ -10,17 +8,8 @@ import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { varlockVitePlugin } from "@varlock/vite-integration";
 
-// Release tags are cut from package.json by `bumpp`, so its version matches the latest tag
-// (and `.git` is not available inside the Docker build).
-const { version: appVersion } = JSON.parse(readFileSync("package.json", "utf8")) as {
-  version: string;
-};
-
 export default defineConfig({
   defaultPackage: ".",
-  define: {
-    "import.meta.env.VITE_APP_VERSION": JSON.stringify(appVersion),
-  },
   server: {
     strictPort: true,
     port: 3000,
@@ -48,9 +37,9 @@ export default defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: lazyPlugins(async () => {
     return [
-      // `init-only`: the production server is started via `varlock run` (see the `start` script),
-      // which resolves env before any SSR chunk evaluates.
-      varlockVitePlugin({ ssrInjectMode: "init-only" }),
+      // Default `init-only` SSR injection: the production server is started via `varlock run`
+      // (see the `start` script and Dockerfile), which resolves env before any SSR chunk evaluates.
+      varlockVitePlugin(),
       devtools(),
       tailwindcss(),
       tanstackStart(),

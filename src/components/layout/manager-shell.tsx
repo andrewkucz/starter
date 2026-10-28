@@ -8,6 +8,7 @@ import {
   XIcon,
 } from "lucide-react";
 import { createContext, use, useCallback, useEffect, useMemo, useState } from "react";
+import { ENV } from "varlock/env";
 
 import { APP_NAME, LogoLink } from "@/components/brand";
 import { ProfileDropdown } from "@/components/profile-dropdown";
@@ -201,7 +202,7 @@ function SidebarContents({
             compact && "sr-only",
           )}
         >
-          v{import.meta.env.VITE_APP_VERSION}
+          v{ENV.VITE_APP_VERSION}
         </p>
         <ProfileDropdown variant="sidebar" compact={compact} side={mobile ? "top" : "right"} />
       </div>

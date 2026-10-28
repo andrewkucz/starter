@@ -11,7 +11,8 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 FROM deps AS build
 COPY . .
 # Mount deployment credentials only for this step; the env file is not stored in a layer.
-# All config is dynamic, and the SSR build uses init-only injection.
+# Config is dynamic (except `@static` items such as VITE_APP_VERSION), and the SSR build uses
+# init-only injection.
 RUN --mount=type=secret,id=build_env,target=/app/config/env/.env,required=true \
   APP_ENV=production node_modules/.bin/vp run build
 

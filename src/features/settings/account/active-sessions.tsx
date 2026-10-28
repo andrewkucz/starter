@@ -1,6 +1,6 @@
 "use client";
 
-import { isSessionNotFreshError } from "@better-auth-ui/core";
+import { isReauthenticationRequiredError } from "@better-auth-ui/core";
 import { useListSessions, useSession, useSignOut } from "@better-auth-ui/react";
 import { useNavigate } from "@tanstack/react-router";
 import { MonitorSmartphone } from "lucide-react";
@@ -43,7 +43,7 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
     isFetching,
     refetch,
   } = useListSessions(authClient);
-  const needsSignIn = isError && isSessionNotFreshError(error);
+  const needsSignIn = isError && isReauthenticationRequiredError(error);
   const navigate = useNavigate();
   const { mutate: signOut, isPending: isSigningOut } = useSignOut(authClient, {
     onSuccess: () => void navigate({ to: "/sign-in", search: { redirect: "/account" } }),

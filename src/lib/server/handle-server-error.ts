@@ -15,7 +15,6 @@ const messageTextSchema = z.string().trim().min(1);
 
 const optionalMessageTextSchema = messageTextSchema.optional().catch(undefined);
 
-/** A non-blank message, given directly or as an object's `message`. */
 const messageSchema = z
   .union([
     messageTextSchema,

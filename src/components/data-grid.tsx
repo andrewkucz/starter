@@ -77,7 +77,6 @@ export type DataGridColumn<TData extends RowData> = {
   sortable?: boolean;
   filterable?: boolean;
   align?: "start" | "center" | "end";
-  /** Pins the column to the table's right edge when the columns overflow horizontally. */
   sticky?: "end";
   readOnly?: boolean | ((row: TData) => boolean);
   editor?: "text" | "checkbox";
@@ -111,7 +110,6 @@ export type DataGridProps<TData extends RowData> = {
   className?: string;
 };
 
-/** Column filters set from the filter inputs are text; other values show an empty input. */
 const filterValueSchema = z.union([z.string(), z.number().transform(String)]).catch("");
 
 const EMPTY_SORTING: SortingState = [];
@@ -532,10 +530,7 @@ function DataGridInner<TData extends RowData>({
   );
 }
 
-/**
- * Memoized so parents can re-render (e.g. on every search keystroke) without re-rendering the
- * table; pass stable columns, data, and callbacks to benefit.
- */
+/** Memoized: pass stable columns, data, and callbacks to benefit. */
 // SAFETY: `memo` drops the generic signature but forwards props to `DataGridInner` unchanged.
 export const DataGrid = memo(DataGridInner) as typeof DataGridInner;
 
@@ -551,11 +546,7 @@ type DataGridRowProps<TData extends RowData> = {
   | { columnConfig?: never; children: ReactNode }
 );
 
-/**
- * Renders interactive cells passed as children, or, given `columnConfig`, its own read-only
- * cells. Only the latter benefits from memoization: those rows re-render only when their data,
- * columns, selection, or callbacks change.
- */
+/** Renders `children`, or its own read-only cells given `columnConfig` (only these benefit from memo). */
 // SAFETY: `memo` drops the generic signature but forwards props to the inner component unchanged.
 const DataGridRow = memo(function DataGridRow<TData extends RowData>({
   row,

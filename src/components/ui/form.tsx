@@ -26,7 +26,6 @@ export function FormDescription({ className, ...props }: React.ComponentProps<"p
   );
 }
 
-/** A field validation error: a message, or a Standard Schema issue carrying one. */
 type FormError = string | { message: string } | undefined;
 
 function errorMessage(error: FormError) {

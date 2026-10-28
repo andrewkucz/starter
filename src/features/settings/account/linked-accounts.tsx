@@ -16,15 +16,6 @@ export type LinkedAccountsProps = {
 
 const multipleAccountsPerProvider: boolean = true;
 
-/**
- * Render a card showing linked social accounts and available social providers to link.
- *
- * Linked accounts (excluding the "credential" provider) are shown with an unlink control;
- * available providers are shown with a link control. Button states and labels reflect
- * ongoing link/unlink activity and use localization for provider-specific text.
- *
- * @returns A JSX element containing the linked accounts card
- */
 export function LinkedAccounts({ className }: LinkedAccountsProps) {
   const { data: accounts, isPending } = useListAccounts(authClient);
 
@@ -60,7 +51,6 @@ export function LinkedAccounts({ className }: LinkedAccountsProps) {
     })) ?? []),
   ];
 
-  // Hidden until a social provider is configured or linked.
   if (!isPending && !loadingProviders && !providersError && allRows.length === 0) return null;
 
   return (

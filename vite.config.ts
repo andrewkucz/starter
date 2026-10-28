@@ -30,8 +30,7 @@ export default defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: lazyPlugins(async () => {
     return [
-      // Bake the resolved env into the SSR build (encrypted in production, see `@encryptInjectedEnv`),
-      // so the server boots with plain `node` and no varlock CLI or secret provider access.
+      // Bakes the resolved env into the SSR build so the server boots with plain `node`.
       varlockVitePlugin({ ssrInjectMode: "resolved-env" }),
       devtools(),
       tailwindcss(),

@@ -15,7 +15,6 @@ export function UserAuthForm({ className, redirectTo, ...props }: UserAuthFormPr
   const { data: providers, error } = useQuery(authProvidersQuery);
   const callbackURL = redirectTo || "/dashboard";
 
-  // Social providers are optional; render nothing until at least one is configured.
   if (!providers?.length && !error) return null;
 
   return (

@@ -6,7 +6,6 @@ import { ENV } from "varlock/env";
 import { ac, roles } from "@/lib/auth/permissions";
 import { db } from "@/db";
 
-// Discord sign-in is optional; it is enabled when its credentials are configured.
 const socialProviders = {
   ...(ENV.DISCORD_CLIENT_ID &&
     ENV.DISCORD_CLIENT_SECRET && {

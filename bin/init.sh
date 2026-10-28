@@ -21,12 +21,10 @@ fi
 
 cd "$project_root"
 
-# Drop the setup instructions from the README (between the init:start/init:end markers).
 if [[ -f README.md ]]; then
   perl -0pi -e 's/<!-- init:start -->.*?<!-- init:end -->\n//s' README.md
 fi
 
-# Tracked and untracked (non-ignored) text files containing a placeholder, excluding this script.
 mapfile -d '' files < <(git grep -lzI --untracked -e Acme -e acme -- ':!bin/init.sh' || true)
 
 if ((${#files[@]} > 0)); then

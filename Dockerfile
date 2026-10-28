@@ -1,7 +1,5 @@
 # syntax=docker/dockerfile:1
-# Varlock resolves config once, during the build, and encrypts it with _VARLOCK_ENV_KEY. The images
-# boot from that snapshot: `web` from the env injected into the SSR build (`resolved-env`), `migrate`
-# from a `varlock freeze` file. Neither needs secret provider access at runtime, only the key.
+# Config is resolved and encrypted with _VARLOCK_ENV_KEY at build time; images need only the key at runtime.
 
 FROM node:24-slim AS base
 RUN npm install --global pnpm@11.22.0
@@ -13,17 +11,13 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 
 FROM deps AS build
 COPY . .
-# Mount deployment credentials and the encryption key only for this step; neither is stored in a
-# layer. Only `@static` items (such as VITE_APP_VERSION) are inlined into client bundles.
 RUN --mount=type=secret,id=build_env,target=/app/config/env/.env,required=true \
   --mount=type=secret,id=varlock_key,env=_VARLOCK_ENV_KEY,required=true \
   export APP_ENV=production \
   && node_modules/.bin/vp run build \
   && node_modules/.bin/varlock freeze
 
-# One-shot migration runner for the `migrate` service in docker-compose.yml. drizzle-kit is a
-# devDependency, so this uses the full install; drizzle.config.ts loads the frozen env via
-# `varlock/auto-load`.
+# drizzle-kit is a devDependency, so this builds on the full install.
 FROM deps AS migrate
 ENV NODE_ENV=production _VARLOCK_USE_FROZEN_ENV=1
 COPY --chown=node:node package.json ./

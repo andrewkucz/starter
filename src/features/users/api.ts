@@ -29,7 +29,6 @@ export const adminUserQueries = createQueryKeys("adminUsers", {
       return { ...data, users: data.users as AdminUser[] };
     },
   }),
-  // Loaded on demand when an admin opens a user's details.
   detail: (userId: string) => ({
     queryKey: [userId],
     queryFn: async () => {

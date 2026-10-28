@@ -9,7 +9,6 @@
 .DS_Store
 tmp
 
-# Local env files can hold credentials; the image build resolves config from the committed files.
 **/.env
 **/.env.local
 **/.env.*.local

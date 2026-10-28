@@ -15,7 +15,6 @@ todos.json
 !.vscode/settings.json
 !.vscode/extensions.json
 
-# env files (varlock): schema and per-env defaults are committed, local overrides are not
 .env.*
 !.env.schema
 !.env.development

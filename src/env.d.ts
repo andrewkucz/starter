@@ -13,24 +13,21 @@ export type CoercedEnvSchema = {
   
   /**
    * **APP_ENV**  
-   * Detected from the runtime (vitest => test, local => development); docker-compose.yml sets production.  
    * ![icon](data:image/svg+xml;utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23808080%22%20d%3D%22M7.885%2010.23L12%203.463l4.116%206.769zm9.606%2011q-1.558%200-2.64-1.081t-1.082-2.64t1.082-2.649t2.64-1.09t2.649%201.09t1.09%202.649t-1.09%202.64t-2.649%201.082m-13.722-.5v-6.462h6.462v6.462z%22%2F%3E%3C%2Fsvg%3E)   
    */
   APP_ENV: "development" | "preview" | "staging" | "production" | "test";
   
   /**
    * **VITE_APP_VERSION**  
-   * package.json `version`, shown in the UI. Release tags are cut from package.json by `bumpp`, so it  
-   * matches the latest tag (and `.git` is not available inside the Docker build).  
+   * Read from package.json because `.git` is not available inside the Docker build.  
    * ![icon](data:image/svg+xml;utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23808080%22%20d%3D%22M.357%209.024A12.07%2012.07%200%200%200%202.97%2019.867a12.05%2012.05%200%200%200%2010.38%204.063c7.768-.703%2013.086-9.799%209.517-16.8c-.416-1.19-2.07-.368-1.903.596q.431%201.052.713%202.155a9.98%209.98%200%200%201-3.926%2010.25a9.965%209.965%200%200%201-14.807-3.809A9.98%209.98%200%200%201%204.44%205.448a9.97%209.97%200%200%201%204.85-3.044a9.87%209.87%200%200%201%207.02.631a.333.333%200%200%201%20.155.429l-3.962%2010.62c-.107.81-.69.786-.797%200l-2.38-7.37a1.57%201.57%200%200%200-.773-.988c-1.19-.56-3.093.667-2.379%202.155l3.914%2010.441c.524%201.393%201.023%201.834%202.058%201.834s1.535-.44%202.058-1.834L20%203.94a1.036%201.036%200%200%200-.369-1.19C13.1-2.907%202.32.641.357%209.023z%22%2F%3E%3C%2Fsvg%3E)   
    */
   VITE_APP_VERSION: string;
   
   /**
    * **INFISICAL_PROJECT_ID** 🔐 _sensitive_  
-   * Production: only needed while building the images (the `build_env` secret in docker-compose.yml).  
-   * Development: optional; set them in your gitignored config/env/.env.local to pull secrets from Infisical  
-   * `dev` instead of the local values in `.env.development`.  
+   * Production: only needed during the image build. Development: optional; set in `.env.local` to  
+   * pull secrets from Infisical `dev` instead of `.env.development`.  
    * ![icon](data:image/svg+xml;utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20fill%3D%22%23808080%22%20d%3D%22M29%2022h-5a2.003%202.003%200%200%201-2-2v-6a2%202%200%200%201%202-2h5v2h-5v6h5ZM18%2012h-4V8h-2v14h6a2.003%202.003%200%200%200%202-2v-6a2%202%200%200%200-2-2m-4%208v-6h4v6Zm-6-8H3v2h5v2H4a2%202%200%200%200-2%202v2a2%202%200%200%200%202%202h6v-8a2%202%200%200%200-2-2m0%208H4v-2h4Z%22%2F%3E%3C%2Fsvg%3E)   
    *   
    * 📚 {@link https://infisical.com/docs/documentation/platform/identities/universal-auth}  
@@ -53,15 +50,12 @@ export type CoercedEnvSchema = {
   
   /**
    * **POSTGRES_PASSWORD** 🔐 _sensitive_  
-   * Password for the production Postgres container, supplied by the deploy environment  
-   * and used to build DATABASE_URL in .env.production.  
    * ![icon](data:image/svg+xml;utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20fill%3D%22%23808080%22%20d%3D%22M29%2022h-5a2.003%202.003%200%200%201-2-2v-6a2%202%200%200%201%202-2h5v2h-5v6h5ZM18%2012h-4V8h-2v14h6a2.003%202.003%200%200%200%202-2v-6a2%202%200%200%200-2-2m-4%208v-6h4v6Zm-6-8H3v2h5v2H4a2%202%200%200%200-2%202v2a2%202%200%200%200%202%202h6v-8a2%202%200%200%200-2-2m0%208H4v-2h4Z%22%2F%3E%3C%2Fsvg%3E)   
    */
   POSTGRES_PASSWORD?: string;
   
   /**
    * **BETTER_AUTH_URL** 🔐 _sensitive_  
-   * Public app origin used by Better Auth.  
    * ![icon](data:image/svg+xml;utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20fill%3D%22%23808080%22%20d%3D%22M24%2021V9h-2v14h8v-2zm-4-6v-4c0-1.103-.897-2-2-2h-6v14h2v-6h1.48l2.335%206h2.145l-2.333-6H18c1.103%200%202-.897%202-2m-6-4h4v4h-4zM8%2023H4c-1.103%200-2-.897-2-2V9h2v12h4V9h2v12c0%201.103-.897%202-2%202%22%2F%3E%3C%2Fsvg%3E)   
    */
   BETTER_AUTH_URL: string;
@@ -74,14 +68,13 @@ export type CoercedEnvSchema = {
   
   /**
    * **ADMIN_EMAILS** 🔐 _sensitive_  
-   * Comma-separated list of emails that are granted the admin role.  
    * ![icon](data:image/svg+xml;utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20fill%3D%22%23808080%22%20d%3D%22M29%2022h-5a2.003%202.003%200%200%201-2-2v-6a2%202%200%200%201%202-2h5v2h-5v6h5ZM18%2012h-4V8h-2v14h6a2.003%202.003%200%200%200%202-2v-6a2%202%200%200%200-2-2m-4%208v-6h4v6Zm-6-8H3v2h5v2H4a2%202%200%200%200-2%202v2a2%202%200%200%200%202%202h6v-8a2%202%200%200%200-2-2m0%208H4v-2h4Z%22%2F%3E%3C%2Fsvg%3E)   
    */
   ADMIN_EMAILS?: string;
   
   /**
    * **DISCORD_CLIENT_ID** 🔐 _sensitive_  
-   * Optional Discord sign-in; enabled when both values are set.  
+   * Discord sign-in is enabled when both values are set.  
    * ![icon](data:image/svg+xml;utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20fill%3D%22%23808080%22%20d%3D%22M29%2022h-5a2.003%202.003%200%200%201-2-2v-6a2%202%200%200%201%202-2h5v2h-5v6h5ZM18%2012h-4V8h-2v14h6a2.003%202.003%200%200%200%202-2v-6a2%202%200%200%200-2-2m-4%208v-6h4v6Zm-6-8H3v2h5v2H4a2%202%200%200%200-2%202v2a2%202%200%200%200%202%202h6v-8a2%202%200%200%200-2-2m0%208H4v-2h4Z%22%2F%3E%3C%2Fsvg%3E)   
    */
   DISCORD_CLIENT_ID?: string;

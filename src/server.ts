@@ -1,18 +1,11 @@
-import { resolve } from "node:path";
-
 import { createStartHandler, defaultStreamHandler } from "@tanstack/react-start/server";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { FastResponse } from "srvx";
 
-import { db } from "@/db";
 import { promoteConfiguredAdminUsers } from "@/lib/auth/configured-admins";
 
+// https://tanstack.com/start/latest/docs/framework/react/guide/hosting#performance-tip-fastresponsehttps://tanstack.com/start/latest/docs/framework/react/guide/hosting#performance-tip-fastresponse
 globalThis.Response = FastResponse;
 
-console.info("Executing database migrations");
-await migrate(db, {
-  migrationsFolder: resolve(process.cwd(), "migrations"),
-});
 void promoteConfiguredAdminUsers();
 
 export default {

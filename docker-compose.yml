@@ -6,28 +6,47 @@
 #   .env.production in sync).
 # The app container resolves its own config with varlock at startup (Infisical + .env.production).
 
+# Shared by `migrate` and `web`.
+x-app-environment: &app-environment
+  APP_ENV: production
+  INFISICAL_PROJECT_ID: ${INFISICAL_PROJECT_ID:?}
+  INFISICAL_CLIENT_ID: ${INFISICAL_CLIENT_ID:?}
+  INFISICAL_CLIENT_SECRET: ${INFISICAL_CLIENT_SECRET:?}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+
 services:
-  # Runs database migrations on startup.
+  # Applies pending migrations, then exits; `web` starts only if it succeeds.
+  migrate:
+    build:
+      context: .
+      target: migrate
+    image: starter-migrate:latest
+    restart: "no"
+    init: true
+    environment: *app-environment
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   web:
     build:
       context: .
+      target: runtime
       secrets:
         - build_env
     image: starter:latest
     restart: unless-stopped
     init: true
     environment:
-      APP_ENV: production
-      INFISICAL_PROJECT_ID: ${INFISICAL_PROJECT_ID:?}
-      INFISICAL_CLIENT_ID: ${INFISICAL_CLIENT_ID:?}
-      INFISICAL_CLIENT_SECRET: ${INFISICAL_CLIENT_SECRET:?}
+      <<: *app-environment
       PORT: "3000"
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
     expose:
       - "3000"
     depends_on:
       postgres:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     healthcheck:
       test:
         [

@@ -1,4 +1,5 @@
-import { getRouteApi, Link } from "@tanstack/react-router";
+import { getRouteApi } from "@tanstack/react-router";
+import { AppLink } from "@/components/app-link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmailAuthForm } from "../sign-in/components/email-auth-form";
 import { UserAuthForm } from "../sign-in/components/user-auth-form";
@@ -19,9 +20,13 @@ export function SignIn() {
         <UserAuthForm redirectTo={redirectTo} />
         <p className="text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
-          <Link to="/sign-up" search={{ redirect: redirectTo }} className="text-primary underline">
+          <AppLink
+            to="/sign-up"
+            search={{ redirect: redirectTo }}
+            className="text-primary underline"
+          >
             Sign up
-          </Link>
+          </AppLink>
         </p>
       </CardContent>
     </Card>

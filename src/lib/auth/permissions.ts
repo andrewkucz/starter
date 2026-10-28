@@ -2,7 +2,7 @@ import { createAccessControl } from "better-auth/plugins/access";
 import { adminAc, defaultStatements, userAc } from "better-auth/plugins/admin/access";
 
 // Role ranking: user (default) < admin.
-export const statement = {
+const statement = {
   ...defaultStatements,
 } as const;
 

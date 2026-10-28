@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const MAX_TASK_TITLE_LENGTH = 200;
+const MAX_TASK_TITLE_LENGTH = 200;
 
 const taskTitleSchema = z
   .string()

@@ -56,7 +56,7 @@ function matchesErrorMessage(message: string, match: string | RegExp): boolean {
   return matches;
 }
 
-export function getServerErrorMessage(cause: unknown): string {
+function getServerErrorMessage(cause: unknown): string {
   if (cause instanceof AppError) {
     return cause.message;
   }

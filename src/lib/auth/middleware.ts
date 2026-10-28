@@ -2,13 +2,11 @@ import { createMiddleware } from "@tanstack/react-start";
 import { AppError } from "@/lib/server/app-error";
 import { getSession } from "./session";
 
-export const optionalAuthMiddleware = createMiddleware({ type: "function" }).server(
-  async ({ next }) => {
-    const session = await getSession();
+const optionalAuthMiddleware = createMiddleware({ type: "function" }).server(async ({ next }) => {
+  const session = await getSession();
 
-    return next({ context: { session } });
-  },
-);
+  return next({ context: { session } });
+});
 
 export const authMiddleware = createMiddleware({ type: "function" })
   .middleware([optionalAuthMiddleware])

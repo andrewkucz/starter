@@ -15,6 +15,7 @@
     "gen:auth": "APP_ENV=test auth generate --config src/lib/auth/server-client.ts --output ./src/db/auth.schema.ts --yes",
     "prepare": "vp config",
     "env:check": "varlock load",
+    "knip": "knip --config config/knip.json",
     "release": "bumpp"
   },
   "dependencies": {
@@ -24,7 +25,6 @@
     "@better-auth/drizzle-adapter": "^1.7.14",
     "@lukemorales/query-key-factory": "^1.3.4",
     "@tailwindcss/vite": "^4.3.3",
-    "@tanstack/match-sorter-utils": "9.2.6",
     "@tanstack/react-devtools": "0.10.13",
     "@tanstack/react-form": "1.33.5",
     "@tanstack/react-query": "5.105.0",
@@ -68,6 +68,7 @@
     "bumpp": "^12.3.0",
     "drizzle-kit": "1.0.0-rc.4",
     "happy-dom": "^21.0.4",
+    "knip": "^6.43.0",
     "typescript": "^7.0.2",
     "vite": "catalog:",
     "vite-plus": "catalog:"

@@ -1,40 +1,25 @@
 import type * as React from "react";
-import { Link as RouterLink } from "@tanstack/react-router";
+import { createLink, type LinkComponent } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
-type AppLinkProps = React.ComponentProps<typeof RouterLink> & {
-  active?: boolean;
-  disabled?: boolean;
-};
-
-export function AppLink({
-  active = false,
-  disabled = false,
+// The router sets `aria-current="page"` when active and `aria-disabled` (blocking navigation)
+// when `disabled`, so styling keys off those attributes. `disabled` is not valid on an anchor.
+function AppAnchor({
   className,
-  onClick,
-  tabIndex,
+  disabled: _disabled,
   ...props
-}: AppLinkProps) {
+}: React.ComponentProps<"a"> & { disabled?: boolean }) {
   return (
-    <RouterLink
-      aria-current={active ? "page" : undefined}
-      aria-disabled={disabled || undefined}
+    <a
       className={cn(
-        "transition-colors hover:text-primary aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:text-inherit aria-[current=page]:font-medium aria-[current=page]:text-primary",
-        active === false && "text-muted-foreground",
+        "text-muted-foreground transition-colors hover:text-primary aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:text-inherit aria-[current=page]:font-medium aria-[current=page]:text-primary",
         className,
       )}
-      onClick={(event) => {
-        if (disabled) {
-          event.preventDefault();
-
-          return;
-        }
-
-        onClick?.(event);
-      }}
-      tabIndex={disabled ? -1 : tabIndex}
       {...props}
     />
   );
 }
+
+const CreatedAppLink = createLink(AppAnchor);
+
+export const AppLink: LinkComponent<typeof AppAnchor> = (props) => <CreatedAppLink {...props} />;

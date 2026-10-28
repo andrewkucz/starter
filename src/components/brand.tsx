@@ -20,7 +20,7 @@ export function LogoIcon({ className, ...props }: ComponentProps<"span">) {
   );
 }
 
-export function Logo({ className, ...props }: ComponentProps<"span">) {
+function Logo({ className, ...props }: ComponentProps<"span">) {
   return (
     <span
       className={cn(

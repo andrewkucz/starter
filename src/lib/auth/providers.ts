@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { auth } from "./server-client";
 
 // Public sign-in metadata only. Never return provider options or credentials.
-export const getAuthProviders = createServerFn({ method: "GET" }).handler(async () => {
+const getAuthProviders = createServerFn({ method: "GET" }).handler(async () => {
   const context = await auth.$context;
 
   return context.socialProviders.map(({ id, name }) => ({ id, displayName: name }));

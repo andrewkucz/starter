@@ -6,6 +6,7 @@ import { parseAdminEmails } from "./configured-admin-emails";
 export async function promoteConfiguredAdminUsers() {
   try {
     const adminEmails = parseAdminEmails(ENV.ADMIN_EMAILS);
+
     if (adminEmails.length === 0) return;
 
     const configuredUsers = await db
@@ -21,6 +22,7 @@ export async function promoteConfiguredAdminUsers() {
             .map((role) => role.trim())
             .filter(Boolean),
         );
+
         if (roles.has("admin")) continue;
 
         roles.add("admin");

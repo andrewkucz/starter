@@ -11,4 +11,5 @@ export const db = drizzle({
 });
 
 export * from "./app.schema.ts";
+
 export * from "./auth.schema.ts";

@@ -23,10 +23,12 @@ export function TasksGrid() {
   const { data: tasks, isPending, isError, error } = useQuery(taskQueries.list);
   const mutations = useTaskMutations();
   const { mutate: updateMutate } = useMutation(mutations.update);
+
   const { mutate: removeMutate, isPending: removeIsPending } = useMutation({
     ...mutations.remove,
     onSuccess: () => setTaskToDelete(null),
   });
+
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
 
   const columns: DataGridColumn<Task>[] = [
@@ -39,6 +41,7 @@ export function TasksGrid() {
       sortable: true,
       onValueChange: (task, value) => {
         updateMutate({ id: task.id, completed: Boolean(value) });
+
         return true;
       },
     },
@@ -51,8 +54,10 @@ export function TasksGrid() {
       editor: "text",
       onValueChange: (task, value) => {
         const parsed = createTaskSchema.shape.title.safeParse(value);
+
         if (!parsed.success) return false;
         updateMutate({ id: task.id, title: parsed.data });
+
         return true;
       },
     },
@@ -61,7 +66,7 @@ export function TasksGrid() {
       title: "Created",
       width: 160,
       sortable: true,
-      render: (value) => format(new Date(value as Date), "PP"),
+      render: (_value, task) => format(task.createdAt, "PP"),
     },
     {
       key: "id",

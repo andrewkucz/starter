@@ -28,6 +28,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -53,13 +54,15 @@ const dataGridFeatures = tableFeatures({
 });
 
 type EditableValue = boolean | string;
+
 type EditDestination = "cell" | "outside" | "up" | "down" | "left" | "right";
-const arrowDirections: Record<string, "up" | "down" | "left" | "right" | undefined> = {
-  ArrowUp: "up",
-  ArrowDown: "down",
-  ArrowLeft: "left",
-  ArrowRight: "right",
-};
+
+const arrowDirections = new Map<string, "up" | "down" | "left" | "right">([
+  ["ArrowUp", "up"],
+  ["ArrowDown", "down"],
+  ["ArrowLeft", "left"],
+  ["ArrowRight", "right"],
+]);
 
 // Sticky cells need an opaque background, so the translucent row hover/selected tints are
 // recomposited over the card colour. Rows with custom tints can target `[data-sticky]` cells.
@@ -108,6 +111,9 @@ export type DataGridProps<TData extends RowData> = {
   className?: string;
 };
 
+/** Column filters set from the filter inputs are text; other values show an empty input. */
+const filterValueSchema = z.union([z.string(), z.number().transform(String)]).catch("");
+
 const EMPTY_SORTING: SortingState = [];
 const EMPTY_FILTERS: ColumnFiltersState = [];
 
@@ -134,10 +140,13 @@ function DataGridInner<TData extends RowData>({
   const [initialDraft, setInitialDraft] = useState<string>();
   const cellElements = useRef(new Map<string, HTMLTableCellElement>());
   const editOnClick = useRef<string | null>(null);
+
   const enableCellSelection =
     selectionMode === "cell" || columns.some((column) => column.onValueChange);
+
   const columnHelper = useMemo(() => createColumnHelper<typeof dataGridFeatures, TData>(), []);
   const stableData = useMemo(() => [...data], [data]);
+
   const tableColumns = useMemo(
     () =>
       columnHelper.columns([
@@ -178,6 +187,7 @@ function DataGridInner<TData extends RowData>({
       ]),
     [columnHelper, columns, selectionMode],
   );
+
   const table = useTable({
     features: dataGridFeatures,
     columns: tableColumns,
@@ -191,11 +201,14 @@ function DataGridInner<TData extends RowData>({
     onSortingChange,
     onColumnFiltersChange,
   });
+
   const columnConfig = useMemo(
-    () => new Map(columns.map((column) => [column.key, column])),
+    () => new Map<string, DataGridColumn<TData>>(columns.map((column) => [column.key, column])),
     [columns],
   );
+
   const modelRows = table.getRowModel().rows;
+
   const visibleRows = useMemo(
     () =>
       isRowPinned
@@ -235,7 +248,7 @@ function DataGridInner<TData extends RowData>({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                const config = columnConfig.get(header.column.id as Extract<keyof TData, string>);
+                const config = columnConfig.get(header.column.id);
                 const sorted = header.column.getIsSorted();
 
                 return (
@@ -280,8 +293,7 @@ function DataGridInner<TData extends RowData>({
           {showColumnFilters ? (
             <TableRow className="hover:bg-transparent">
               {table.getAllLeafColumns().map((column) => {
-                const config = columnConfig.get(column.id as Extract<keyof TData, string>);
-                const filterValue = column.getFilterValue();
+                const config = columnConfig.get(column.id);
 
                 return (
                   <TableHead key={column.id} className="h-11">
@@ -290,11 +302,7 @@ function DataGridInner<TData extends RowData>({
                         aria-label={`Filter ${config?.title ?? column.id}`}
                         className="h-7"
                         placeholder="Filter..."
-                        value={
-                          typeof filterValue === "string" || typeof filterValue === "number"
-                            ? String(filterValue)
-                            : ""
-                        }
+                        value={filterValueSchema.parse(column.getFilterValue())}
                         onChange={(event) => column.setFilterValue(event.target.value || undefined)}
                       />
                     ) : null}
@@ -328,14 +336,15 @@ function DataGridInner<TData extends RowData>({
               return (
                 <DataGridRow key={row.id} {...rowProps}>
                   {row.getAllCells().map((cell, cellIndex) => {
-                    const config = columnConfig.get(cell.column.id as Extract<keyof TData, string>);
+                    const config = columnConfig.get(cell.column.id);
 
                     const isCellSelection = enableCellSelection;
+
                     const isEditable =
-                      Boolean(config?.onValueChange) &&
-                      config?.editor !== "checkbox" &&
-                      config?.readOnly !== true &&
-                      !(typeof config?.readOnly === "function" && config.readOnly(row.original));
+                      config !== undefined &&
+                      config.editor !== "checkbox" &&
+                      !isColumnReadOnly(config, row.original);
+
                     const isSelected = isCellSelection && cell.getIsSelected();
                     const isFocused = isCellSelection && cell.getIsFocused();
 
@@ -385,30 +394,35 @@ function DataGridInner<TData extends RowData>({
                             event.preventDefault();
                             setInitialDraft(event.key);
                             setEditingCell(cell.id);
+
                             return;
                           }
 
                           if (isEditable && (event.key === "Enter" || event.key === "F2")) {
                             event.preventDefault();
                             setEditingCell(cell.id);
+
                             return;
                           }
 
                           if ((event.metaKey || event.ctrlKey) && event.key === "a") {
                             event.preventDefault();
                             table.selectAllCells();
+
                             return;
                           }
 
-                          const direction = arrowDirections[event.key];
+                          const direction = arrowDirections.get(event.key);
 
                           if (direction) {
                             event.preventDefault();
+
                             if (event.shiftKey) {
                               table.extendCellSelection(direction);
                             } else {
                               table.moveCellSelection(direction);
                               const focused = table.getFocusedCell();
+
                               if (focused) cellElements.current.get(focused.id)?.focus();
                             }
                           }
@@ -418,6 +432,7 @@ function DataGridInner<TData extends RowData>({
                             return;
                           editOnClick.current =
                             document.activeElement === event.currentTarget ? cell.id : null;
+
                           if (
                             event.target instanceof Element &&
                             event.target.closest("a, button, input, select, textarea")
@@ -430,6 +445,7 @@ function DataGridInner<TData extends RowData>({
                           if (isEditable && editOnClick.current === cell.id) {
                             setEditingCell(cell.id);
                           }
+
                           editOnClick.current = null;
                         }}
                         onMouseEnter={
@@ -460,19 +476,26 @@ function DataGridInner<TData extends RowData>({
                             onFinishEditing={(destination) => {
                               setEditingCell(null);
                               setInitialDraft(undefined);
+
                               if (destination === "outside") return;
                               const rows = table.getRowModel().rows;
+
                               const rowOffset =
                                 destination === "down" ? 1 : destination === "up" ? -1 : 0;
+
                               const columnOffset =
                                 destination === "right" ? 1 : destination === "left" ? -1 : 0;
+
                               const targetRow =
                                 rows[rows.findIndex((item) => item.id === row.id) + rowOffset] ??
                                 row;
+
                               const cells = targetRow.getAllCells();
+
                               const columnIndex = cells.findIndex(
                                 (item) => item.column.id === cell.column.id,
                               );
+
                               const target = cells[columnIndex + columnOffset] ?? cell;
                               table.setFocusedCell(target.row.id, target.column.id);
                               cellElements.current.get(target.id)?.focus();
@@ -513,6 +536,7 @@ function DataGridInner<TData extends RowData>({
  * Memoized so parents can re-render (e.g. on every search keystroke) without re-rendering the
  * table; pass stable columns, data, and callbacks to benefit.
  */
+// SAFETY: `memo` drops the generic signature but forwards props to `DataGridInner` unchanged.
 export const DataGrid = memo(DataGridInner) as typeof DataGridInner;
 
 type DataGridRowProps<TData extends RowData> = {
@@ -532,6 +556,7 @@ type DataGridRowProps<TData extends RowData> = {
  * cells. Only the latter benefits from memoization: those rows re-render only when their data,
  * columns, selection, or callbacks change.
  */
+// SAFETY: `memo` drops the generic signature but forwards props to the inner component unchanged.
 const DataGridRow = memo(function DataGridRow<TData extends RowData>({
   row,
   isSelected,
@@ -609,11 +634,9 @@ const DataGridRow = memo(function DataGridRow<TData extends RowData>({
 function noop() {}
 
 function isColumnReadOnly<TData extends RowData>(column: DataGridColumn<TData>, row: TData) {
-  return (
-    column.readOnly === true ||
-    (typeof column.readOnly === "function" && column.readOnly(row)) ||
-    !column.onValueChange
-  );
+  const { readOnly } = column;
+
+  return readOnly === true || (readOnly && readOnly(row)) || !column.onValueChange;
 }
 
 /** Checkbox columns still render a (disabled) checkbox when read-only. */
@@ -626,8 +649,8 @@ function renderReadOnlyValue<TData extends RowData>(column: DataGridColumn<TData
 
   return column.render
     ? column.render(value, row)
-    : typeof value === "number"
-      ? value.toLocaleString()
+    : Number.isFinite(value)
+      ? Number(value).toLocaleString()
       : String(value ?? "");
 }
 
@@ -656,9 +679,11 @@ function DataGridValueCell<TData extends RowData>({
   // Bridge the interval between closing the editor and receiving the optimistic row.
   // Once row data arrives, it owns the display again, including normalization and rollback.
   const visibleDraft = committedDraft?.row === row ? committedDraft.text : undefined;
+
   if (committedDraft && committedDraft.row !== row) {
     setCommittedDraft(null);
   }
+
   const isReadOnly = isColumnReadOnly(column, row);
 
   useEffect(() => {
@@ -676,25 +701,32 @@ function DataGridValueCell<TData extends RowData>({
   const finish = (destination: EditDestination) => {
     if (finished.current) return;
     finished.current = true;
+
     if (destination !== "cell" && draft !== String(value ?? "")) {
       const accepted = column.onValueChange?.(row, draft);
+
       if (accepted !== false) {
         setCommittedDraft({ row, text: draft });
       }
     }
+
     setDraft(String(value ?? ""));
     onFinishEditing(destination);
   };
 
   useEffect(() => {
     if (!isEditing) return;
+
     const onPointerDown = (event: PointerEvent) => {
       const cell = inputRef.current?.closest("td");
+
       if (event.target instanceof Node && cell && !cell.contains(event.target)) {
         finish("outside");
       }
     };
+
     document.addEventListener("pointerdown", onPointerDown);
+
     return () => document.removeEventListener("pointerdown", onPointerDown);
   });
 
@@ -735,8 +767,10 @@ function DataGridValueCell<TData extends RowData>({
         onChange={(event) => setDraft(event.target.value)}
         onKeyDown={(event) => {
           event.stopPropagation();
+
           if (event.nativeEvent.isComposing) return;
-          const direction = arrowDirections[event.key];
+          const direction = arrowDirections.get(event.key);
+
           if (direction) {
             event.preventDefault();
             finish(direction);

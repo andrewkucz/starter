@@ -43,8 +43,10 @@ export function ActiveSessions({ className }: ActiveSessionsProps) {
     isFetching,
     refetch,
   } = useListSessions(authClient);
+
   const needsSignIn = isError && isReauthenticationRequiredError(error);
   const navigate = useNavigate();
+
   const { mutate: signOut, isPending: isSigningOut } = useSignOut(authClient, {
     onSuccess: () => void navigate({ to: "/sign-in", search: { redirect: "/account" } }),
     onError: () => toast.error("Unable to sign out. Please try again."),

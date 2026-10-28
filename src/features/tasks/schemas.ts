@@ -19,5 +19,7 @@ export const updateTaskSchema = z.object({
 export const taskIdSchema = z.object({ id: z.number().int().positive() });
 
 export type CreateTaskInput = z.infer<typeof createTaskSchema>;
+
 export type UpdateTaskInput = z.infer<typeof updateTaskSchema>;
+
 export type TaskIdInput = z.infer<typeof taskIdSchema>;

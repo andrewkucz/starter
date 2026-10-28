@@ -26,6 +26,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         loading: <Loader2Icon className="size-4 animate-spin" />,
       }}
       style={
+        // SAFETY: CSSProperties has no index signature for custom properties; these are all strings.
         {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",

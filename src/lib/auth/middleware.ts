@@ -5,6 +5,7 @@ import { getSession } from "./session";
 export const optionalAuthMiddleware = createMiddleware({ type: "function" }).server(
   async ({ next }) => {
     const session = await getSession();
+
     return next({ context: { session } });
   },
 );

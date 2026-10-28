@@ -157,6 +157,7 @@ function ContextMenuItem({
       render={asChild ? <SlotRoot /> : undefined}
       onClick={(event) => {
         onClick?.(event);
+
         if (!event.defaultPrevented) onSelect?.(event);
       }}
       className={cn(

@@ -27,6 +27,7 @@ export function AppLink({
       onClick={(event) => {
         if (disabled) {
           event.preventDefault();
+
           return;
         }
 

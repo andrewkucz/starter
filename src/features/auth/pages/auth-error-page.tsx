@@ -1,15 +1,14 @@
 import { CircleAlert } from "lucide-react";
-import { Link, useSearch } from "@tanstack/react-router";
+import { getRouteApi, Link } from "@tanstack/react-router";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { getAuthErrorMessage } from "../error/messages";
 
+const route = getRouteApi("/_app/_auth/auth-error");
+
 export function AuthErrorPage() {
-  const search = useSearch({ strict: false });
-  const errorCode = typeof search.error === "string" ? search.error : null;
-  const errorDescription =
-    typeof search.error_description === "string" ? search.error_description : null;
+  const { error: errorCode, error_description: errorDescription } = route.useSearch();
 
   return (
     <Card className="max-w-sm w-full gap-4">

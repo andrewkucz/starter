@@ -35,6 +35,7 @@ export async function createTask(userId: string, input: CreateTaskInput) {
     .insert(tasksTable)
     .values({ userId, title: input.title })
     .returning({ id: tasksTable.id });
+
   return task;
 }
 
@@ -46,6 +47,7 @@ export async function updateTask(userId: string, { id, ...changes }: UpdateTaskI
     .returning({ id: tasksTable.id });
 
   if (!task) throw new AppError({ code: "NOT_FOUND", message: "Task not found." });
+
   return task;
 }
 
@@ -56,5 +58,6 @@ export async function deleteTask(userId: string, id: number) {
     .returning({ id: tasksTable.id });
 
   if (!task) throw new AppError({ code: "NOT_FOUND", message: "Task not found." });
+
   return { success: true };
 }

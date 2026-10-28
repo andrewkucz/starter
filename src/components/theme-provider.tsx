@@ -7,6 +7,7 @@ export const UserThemeSchema = z.enum(["light", "dark", "system"]).catch("system
 export const AppThemeSchema = z.enum(["light", "dark"]).catch("light");
 
 export type UserTheme = z.infer<typeof UserThemeSchema>;
+
 export type AppTheme = z.infer<typeof AppThemeSchema>;
 
 const themeStorageKey = "theme";
@@ -48,6 +49,7 @@ const setupPreferredListener = createClientOnlyFn(() => {
   const mediaQuery = window.matchMedia(prefersDarkMediaQuery);
   const handleChange = () => handleThemeChange("system");
   mediaQuery.addEventListener("change", handleChange);
+
   return () => mediaQuery.removeEventListener("change", handleChange);
 });
 
@@ -61,6 +63,7 @@ const themeScript: string = (function () {
         const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "dark"
           : "light";
+
         document.documentElement.classList.add(systemTheme, "system");
       } else {
         document.documentElement.classList.add(validTheme);
@@ -69,6 +72,7 @@ const themeScript: string = (function () {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
+
       document.documentElement.classList.add(systemTheme, "system");
     }
   }
@@ -89,6 +93,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (userTheme !== "system") return;
+
     return setupPreferredListener();
   }, [userTheme]);
 

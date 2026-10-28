@@ -34,6 +34,7 @@ function formatDateTime(value: Date | string | null | undefined) {
 function describeUserAgent(userAgent: string | null | undefined) {
   if (!userAgent) return "Unknown device";
   const ua = Bowser.parse(userAgent);
+
   return [ua.browser.name, ua.os.name].filter(Boolean).join(", ") || "Unknown device";
 }
 
@@ -109,6 +110,7 @@ function ConnectedAccounts({ userId }: { userId: string }) {
   const { data: providers } = useQuery(authProvidersQuery);
 
   if (isPending) return <Skeleton className="h-16 w-full" />;
+
   if (error) return <p className="text-sm text-destructive">{error.message}</p>;
 
   const providerName = (providerId: string) =>

@@ -9,7 +9,7 @@ import {
   SunIcon,
 } from "lucide-react";
 import { SignOutDialog } from "@/components/sign-out-dialog";
-import { useTheme, type UserTheme } from "@/components/theme-provider";
+import { useTheme, type UserTheme, UserThemeSchema } from "@/components/theme-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -107,7 +107,7 @@ export function ProfileDropdown({
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup
             value={userTheme}
-            onValueChange={(value) => setTheme(value as UserTheme)}
+            onValueChange={(value) => setTheme(UserThemeSchema.parse(value))}
           >
             {themes.map(({ value, label, icon: Icon }) => (
               <DropdownMenuRadioItem key={value} value={value} indicatorSide="right">

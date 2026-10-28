@@ -8,6 +8,7 @@ export function AppShell() {
   const hideAuthNavigation = useRouterState({
     select: (state) => ["/", "/sign-in", "/sign-up"].includes(state.location.pathname),
   });
+
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       <header className="h-14 shrink-0 border-b bg-card">

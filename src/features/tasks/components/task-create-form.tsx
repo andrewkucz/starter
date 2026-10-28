@@ -11,6 +11,7 @@ import { createTaskSchema } from "../schemas";
 
 export function TaskCreateForm() {
   const mutations = useTaskMutations();
+
   const { mutate: createMutate, isPending: createIsPending } = useMutation({
     ...mutations.create,
     onSuccess: () => {
@@ -18,6 +19,7 @@ export function TaskCreateForm() {
       form.reset();
     },
   });
+
   const form = useForm({
     defaultValues: { title: "" },
     validators: { onSubmit: createTaskSchema },

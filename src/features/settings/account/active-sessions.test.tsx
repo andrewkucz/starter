@@ -3,13 +3,17 @@ import { expect, it, vi } from "vite-plus/test";
 import { ActiveSessions } from "./active-sessions";
 
 const { useListSessions } = vi.hoisted(() => ({ useListSessions: vi.fn() }));
+
 vi.mock("@better-auth-ui/react", () => ({
   useListSessions,
   useSession: () => ({ data: null }),
   useSignOut: () => ({ mutate: vi.fn(), isPending: false }),
 }));
+
 vi.mock("@/lib/auth/browser", () => ({ authClient: {} }));
+
 vi.mock("@tanstack/react-router", () => ({ useNavigate: () => vi.fn() }));
+
 vi.mock("./active-session", () => ({ ActiveSession: () => <div>Session device</div> }));
 
 it.each([undefined, null, []])("shows an empty state for settled data %j", (data) => {

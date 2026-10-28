@@ -15,6 +15,7 @@ export type LinkedAccountsProps = {
 };
 
 const multipleAccountsPerProvider: boolean = true;
+
 /**
  * Render a card showing linked social accounts and available social providers to link.
  *
@@ -26,11 +27,13 @@ const multipleAccountsPerProvider: boolean = true;
  */
 export function LinkedAccounts({ className }: LinkedAccountsProps) {
   const { data: accounts, isPending } = useListAccounts(authClient);
+
   const {
     data: providers,
     isPending: loadingProviders,
     error: providersError,
   } = useQuery(authProvidersQuery);
+
   const oauthProviderIds = providers?.map((provider) => provider.id) ?? [];
 
   const linkedAccounts = accounts?.filter((account) => account.providerId !== "credential");

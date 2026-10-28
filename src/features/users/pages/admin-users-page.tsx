@@ -34,18 +34,22 @@ const route = getRouteApi("/_authenticated/admin/users");
 export function AdminUsersPage() {
   const { page } = route.useSearch();
   const navigate = route.useNavigate();
+
   const { data, isPending, isPlaceholderData, error } = useQuery({
     ...adminUserQueries.list(page),
     placeholderData: keepPreviousData,
   });
+
   const [selectedUser, setSelectedUser] = useState<UserSummary | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   const total = data?.total ?? 0;
   const pageCount = Math.max(1, Math.ceil(total / USERS_PAGE_SIZE));
   const firstIndex = (page - 1) * USERS_PAGE_SIZE;
+
   const goToPage = (nextPage: number) =>
     void navigate({ search: (prev) => ({ ...prev, page: nextPage }) });
+
   const openDetails = (user: UserSummary) => {
     setSelectedUser(user);
     setDetailsOpen(true);
@@ -78,6 +82,7 @@ export function AdminUsersPage() {
                 <TableBody>
                   {data.users.map((user) => {
                     const display = getSessionUserDisplay(user);
+
                     return (
                       <TableRow
                         key={user.id}

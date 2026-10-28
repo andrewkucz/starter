@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 export function ForbiddenError() {
   const navigate = useNavigate();
   const router = useRouter();
+
   return (
     <div className="h-svh">
       <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-2">

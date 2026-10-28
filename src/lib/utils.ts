@@ -39,19 +39,23 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
       for (let i = 2; i <= 4; i++) {
         rangeWithDots.push(i);
       }
+
       rangeWithDots.push("...", totalPages);
     } else if (currentPage >= totalPages - 2) {
       // Near the end: [1] ... [7] [8] [9] [10]
       rangeWithDots.push("...");
+
       for (let i = totalPages - 3; i <= totalPages; i++) {
         rangeWithDots.push(i);
       }
     } else {
       // In the middle: [1] ... [4] [5] [6] ... [10]
       rangeWithDots.push("...");
+
       for (let i = currentPage - 1; i <= currentPage + 1; i++) {
         rangeWithDots.push(i);
       }
+
       rangeWithDots.push("...", totalPages);
     }
   }

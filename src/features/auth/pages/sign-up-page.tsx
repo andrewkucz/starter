@@ -1,11 +1,12 @@
-import { Link, useSearch } from "@tanstack/react-router";
+import { getRouteApi, Link } from "@tanstack/react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmailAuthForm } from "../sign-in/components/email-auth-form";
 import { UserAuthForm } from "../sign-in/components/user-auth-form";
 
+const route = getRouteApi("/_app/_auth/sign-up");
+
 export function SignUp() {
-  const search = useSearch({ strict: false });
-  const redirectTo = typeof search.redirect === "string" ? search.redirect : undefined;
+  const { redirect: redirectTo } = route.useSearch();
 
   return (
     <Card className="max-w-sm w-full gap-4">

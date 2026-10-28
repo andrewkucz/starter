@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { DataGrid, type DataGridProps } from "./data-grid";
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
+
 let root: Root;
 let container: HTMLDivElement;
 
@@ -36,6 +37,7 @@ function type(value: string) {
     Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!.call(input, value);
     input.dispatchEvent(new Event("input", { bubbles: true }));
   });
+
   return input;
 }
 
@@ -44,6 +46,7 @@ function setup(selectionMode: "row" | "cell", sorted = false) {
   container = document.createElement("div");
   document.body.append(container);
   root = createRoot(container);
+
   const render = (
     rows = [
       { id: "1", name: "Alpha" },
@@ -65,10 +68,14 @@ function setup(selectionMode: "row" | "cell", sorted = false) {
       </>,
     );
   };
+
   act(() => render());
+
   const cells = [...container.querySelectorAll("tbody tr")].map(
+    // SAFETY: every rendered body row ends with a table cell.
     (row) => row.lastElementChild as HTMLTableCellElement,
   );
+
   return { save, cells, render };
 }
 
@@ -115,6 +122,7 @@ describe.each(["row", "cell"] as const)("%s selection editing", (mode) => {
       "N",
     );
     const input = type("New text");
+
     if (destination === "Enter") key(input, "Enter");
     else click(cells[1]);
     expect(save).toHaveBeenCalledExactlyOnceWith({ id: "1", name: "Alpha" }, "New text");
@@ -158,6 +166,7 @@ describe.each(["row", "cell"] as const)("%s selection editing", (mode) => {
       click(cells[0]);
       key(cells[0], "N");
       const input = type("New text ");
+
       if (destination === "Enter") key(input, "Enter");
       else click(cells[1]);
       expect(cells[0].textContent).toBe("New text ");
@@ -217,8 +226,11 @@ describe.each(["row", "cell"] as const)("%s selection editing", (mode) => {
         ),
       );
       const rows = [...container.querySelectorAll("tbody tr")];
+
       const cellAt = (row: number, column: number) =>
+        // SAFETY: body rows contain only table cells, offset by the selection checkbox in row mode.
         rows[row].children[column + (mode === "row" ? 1 : 0)] as HTMLTableCellElement;
+
       const source = cellAt(fromRow, fromColumn);
       const target = cellAt(toRow, toColumn);
       click(source);
@@ -230,6 +242,7 @@ describe.each(["row", "cell"] as const)("%s selection editing", (mode) => {
       expect(source.textContent).toBe("X");
       expect(document.activeElement).toBe(target);
       expect(container.querySelector('tbody input[aria-label^="Edit "]')).toBeNull();
+
       // At the grid edge, commit without wrapping or losing focus.
       if (arrow !== "ArrowLeft" || mode === "cell") {
         key(target, "Y");
@@ -253,6 +266,7 @@ describe.each(["row", "cell"] as const)("%s selection editing", (mode) => {
       expect(cells[1].dataset.focused).toBe("true");
       expect(cells[1].tabIndex).toBe(0);
     };
+
     expectFocus();
     await act(async () =>
       render([
@@ -351,6 +365,7 @@ describe("column filters", () => {
     const names = [...container.querySelectorAll("tbody tr")].map(
       (row) => row.firstElementChild?.textContent,
     );
+
     expect(names).toEqual(["Alpha"]);
   });
 });
@@ -360,17 +375,23 @@ describe("read-only rows", () => {
     container = document.createElement("div");
     document.body.append(container);
     root = createRoot(container);
+
     type Row = { id: string; name: string };
+
     const renderName = vi.fn((value: string) => value);
+
     const columns: DataGridProps<Row>["columns"] = [
       { key: "name", title: "Name", render: renderName },
     ];
+
     const data: Row[] = [
       { id: "1", name: "Alpha" },
       { id: "2", name: "Beta" },
       { id: "3", name: "Gamma" },
     ];
+
     const getRowId = (row: Row) => row.id;
+
     const render = (props: Pick<DataGridProps<Row>, "sorting" | "columnFilters"> = {}) =>
       act(() =>
         root.render(
@@ -384,6 +405,7 @@ describe("read-only rows", () => {
           />,
         ),
       );
+
     const names = () => [...container.querySelectorAll("tbody tr")].map((row) => row.textContent);
 
     render();
@@ -403,12 +425,14 @@ describe("DataGrid pinned rows", () => {
     container = document.createElement("div");
     document.body.append(container);
     root = createRoot(container);
+
     const rows = [
       { id: "1", name: "Alpha", pinned: false },
       { id: "2", name: "Beta", pinned: true },
       { id: "3", name: "Gamma", pinned: false },
       { id: "4", name: "Delta", pinned: true },
     ];
+
     act(() =>
       root.render(
         <DataGrid

@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { z } from "zod";
 import { AppError } from "./app-error";
 
 const DEFAULT_ERROR_MESSAGE = "Something went wrong!";
@@ -10,69 +11,74 @@ type ServerErrorMatcher = {
 
 const SERVER_ERROR_MATCHERS: readonly ServerErrorMatcher[] = [];
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
+const messageTextSchema = z.string().trim().min(1);
 
-function getMessage(value: unknown): string | undefined {
-  if (typeof value === "string") {
-    const message = value.trim();
-    return message || undefined;
-  }
+const optionalMessageTextSchema = messageTextSchema.optional().catch(undefined);
 
-  if (!isRecord(value) || typeof value.message !== "string") return undefined;
+/** A non-blank message, given directly or as an object's `message`. */
+const messageSchema = z
+  .union([
+    messageTextSchema,
+    z.object({ message: messageTextSchema }).transform(({ message }) => message),
+  ])
+  .optional()
+  .catch(undefined);
 
-  const message = value.message.trim();
-  return message || undefined;
-}
-
-function getResponseMessage(error: Record<string, unknown>): string | undefined {
-  if (!isRecord(error.response) || !isRecord(error.response.data)) return undefined;
-
-  return getMessage(error.response.data.title) ?? getMessage(error.response.data);
-}
-
-function getErrorMessage(error: unknown): string | undefined {
-  if (!isRecord(error)) return getMessage(error);
-
-  return (
-    getMessage(error.error) ??
-    getMessage(error.cause) ??
-    getResponseMessage(error) ??
-    getMessage(error)
-  );
-}
+/** The most specific message a thrown value or failed response carries, if any. */
+const serverErrorMessageSchema = z
+  .union([
+    messageTextSchema,
+    z
+      .object({
+        error: messageSchema,
+        cause: messageSchema,
+        response: z
+          .object({ data: z.object({ title: messageSchema, message: optionalMessageTextSchema }) })
+          .optional()
+          .catch(undefined),
+        message: optionalMessageTextSchema,
+      })
+      .transform(
+        ({ error, cause, response, message }) =>
+          error ?? cause ?? response?.data.title ?? response?.data.message ?? message,
+      ),
+  ])
+  .optional()
+  .catch(undefined);
 
 function matchesErrorMessage(message: string, match: string | RegExp): boolean {
-  if (typeof match === "string") return message === match;
+  if (!(match instanceof RegExp)) return message === match;
 
   match.lastIndex = 0;
   const matches = match.test(message);
   match.lastIndex = 0;
+
   return matches;
 }
 
-export function getServerErrorMessage(error: unknown): string {
-  if (error && error instanceof AppError) {
-    return error.message;
+export function getServerErrorMessage(cause: unknown): string {
+  if (cause instanceof AppError) {
+    return cause.message;
   }
 
-  const errorMessage = getErrorMessage(error);
+  const errorMessage = serverErrorMessageSchema.parse(cause);
+
   if (!errorMessage) return DEFAULT_ERROR_MESSAGE;
 
   const matcher = SERVER_ERROR_MATCHERS.find(({ match }) =>
     matchesErrorMessage(errorMessage, match),
   );
+
   if (!matcher) return DEFAULT_ERROR_MESSAGE;
 
-  return getMessage(matcher.message) ?? errorMessage;
+  return matcher.message?.trim() || errorMessage;
 }
 
-export function handleServerError(error: unknown, ...otherArgs: unknown[]) {
+export function handleServerError(cause: unknown, ...otherArgs: unknown[]) {
   if (import.meta.env.DEV) {
     // eslint-disable-next-line no-console
-    console.error(error, { context: otherArgs });
+    console.error(cause, { context: otherArgs });
   }
 
-  toast.error(getServerErrorMessage(error));
+  toast.error(getServerErrorMessage(cause));
 }

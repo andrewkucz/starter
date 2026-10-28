@@ -22,7 +22,10 @@ export const adminUserQueries = createQueryKeys("adminUsers", {
           sortDirection: "desc",
         },
       });
+
       if (error) throw new Error(error.message ?? "Unable to load users.");
+
+      // SAFETY: the admin endpoints return full user records (see `AdminUser`).
       return { ...data, users: data.users as AdminUser[] };
     },
   }),
@@ -34,13 +37,18 @@ export const adminUserQueries = createQueryKeys("adminUsers", {
         authClient.admin.getUser({ query: { id: userId } }),
         authClient.admin.listUserSessions({ userId }),
       ]);
+
       if (userResult.error) throw new Error(userResult.error.message ?? "Unable to load user.");
+
       if (sessionsResult.error) {
         throw new Error(sessionsResult.error.message ?? "Unable to load sessions.");
       }
+
       const sessions = sessionsResult.data.sessions.sort(
         (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
       );
+
+      // SAFETY: the admin endpoints return full user records (see `AdminUser`).
       return { user: userResult.data as AdminUser, sessions };
     },
   }),
@@ -58,7 +66,9 @@ export function useAdminUserMutations() {
       mutationKey: [...adminUserQueries._def, "setRoles"],
       mutationFn: async ({ userId, roles }: { userId: string; roles: RoleName[] }) => {
         const { data, error } = await authClient.admin.setRole({ userId, role: roles });
+
         if (error) throw new Error(error.message ?? "Unable to update roles.");
+
         return data;
       },
       onSettled: () => queryClient.invalidateQueries({ queryKey: adminUserQueries._def }),

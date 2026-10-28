@@ -21,7 +21,7 @@ const ASSIGNABLE_ROLES = [{ role: "admin", description: "Manage users." }] as co
 type AssignableRole = (typeof ASSIGNABLE_ROLES)[number]["role"];
 
 function getAssignedRoles(role: string | null | undefined) {
-  return ASSIGNABLE_ROLES.map(({ role: name }) => name).filter((name) => hasRole(role, name));
+  return ASSIGNABLE_ROLES.flatMap(({ role: name }) => (hasRole(role, name) ? [name] : []));
 }
 
 export function RoleEditor({ userId, role }: { userId: string; role: string | null | undefined }) {
@@ -30,6 +30,7 @@ export function RoleEditor({ userId, role }: { userId: string; role: string | nu
   const [editing, setEditing] = useState(false);
   const [selected, setSelected] = useState<AssignableRole[]>([]);
   const mutations = useAdminUserMutations();
+
   const { mutate: setRoles, isPending } = useMutation({
     ...mutations.setRoles,
     onSuccess: () => {
@@ -59,6 +60,7 @@ export function RoleEditor({ userId, role }: { userId: string; role: string | nu
   }
 
   const assigned = getAssignedRoles(role);
+
   const dirty =
     selected.length !== assigned.length || selected.some((name) => !assigned.includes(name));
 
@@ -76,6 +78,7 @@ export function RoleEditor({ userId, role }: { userId: string; role: string | nu
           const id = `user-role-${name}`;
           // Keep admins from locking themselves out of this page.
           const locked = isSelf && name === "admin";
+
           return (
             <div key={name} className="flex items-start gap-2">
               <Checkbox

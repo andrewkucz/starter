@@ -26,12 +26,11 @@ export function FormDescription({ className, ...props }: React.ComponentProps<"p
   );
 }
 
-function errorMessage(error: unknown) {
-  if (typeof error === "string") return error;
-  if (error && typeof error === "object" && "message" in error) {
-    return String(error.message);
-  }
-  return null;
+/** A field validation error: a message, or a Standard Schema issue carrying one. */
+type FormError = string | { message: string } | undefined;
+
+function errorMessage(error: FormError) {
+  return error instanceof Object ? error.message : error;
 }
 
 export function FormMessage({
@@ -39,8 +38,9 @@ export function FormMessage({
   className,
   children,
   ...props
-}: React.ComponentProps<"p"> & { errors?: readonly unknown[] }) {
+}: React.ComponentProps<"p"> & { errors?: readonly FormError[] }) {
   const body = errors?.map(errorMessage).filter(Boolean).join(", ") || children;
+
   if (!body) return null;
 
   return (

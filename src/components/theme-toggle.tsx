@@ -1,21 +1,16 @@
 import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
 
-import { useTheme, type UserTheme } from "@/components/theme-provider";
+import { useTheme, UserThemeSchema } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
-
-const themeConfig: Record<UserTheme, { label: string }> = {
-  light: { label: "Light" },
-  dark: { label: "Dark" },
-  system: { label: "System" },
-};
 
 export default function ThemeToggle() {
   const { userTheme, setTheme } = useTheme();
 
   const getNextTheme = () => {
-    const themes = Object.keys(themeConfig) as UserTheme[];
+    const themes = UserThemeSchema.unwrap().options;
     const currentIndex = themes.indexOf(userTheme);
     const nextIndex = (currentIndex + 1) % themes.length;
+
     return themes[nextIndex];
   };
 

@@ -16,6 +16,7 @@ it.each([
 ])("does not retry a non-retryable error: %j", async (error) => {
   const client = getQueryClient();
   const queryFn = vi.fn().mockRejectedValue(error);
+
   try {
     await expect(
       client.fetchQuery({ queryKey: ["auth", "test"], queryFn, retryDelay: 0 }),
@@ -32,6 +33,7 @@ it.each([undefined, 408, 429, 500, 502, 503, 504])(
     const client = getQueryClient();
     const error = Object.assign(new Error("Temporary failure"), { status });
     const queryFn = vi.fn().mockRejectedValue(error);
+
     try {
       await expect(
         client.fetchQuery({ queryKey: ["auth", "test"], queryFn, retryDelay: 0 }),

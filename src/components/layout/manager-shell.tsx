@@ -218,12 +218,14 @@ export function ManagerShell() {
   const toggle = useCallback(() => {
     if (window.matchMedia("(max-width: 767px)").matches) {
       setMobileOpen((open) => !open);
+
       return;
     }
 
     setExpanded((open) => {
       const nextOpen = !open;
       document.cookie = `manager_sidebar=${nextOpen}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}; samesite=lax`;
+
       return nextOpen;
     });
   }, []);
@@ -250,6 +252,7 @@ export function ManagerShell() {
     };
 
     window.addEventListener("keydown", handleKeyDown);
+
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [toggle]);
 

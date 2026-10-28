@@ -46,37 +46,28 @@ async function render(element: React.ReactNode) {
     await new Promise((resolve) => setTimeout(resolve, 20));
   });
 }
-it("offers Google login and preserves the requested post-login destination", async () => {
-  mocks.providers.mockResolvedValue([
-    { id: "google", displayName: "Google" },
-    { id: "discord", displayName: "Discord" },
-  ]);
-  await render(<UserAuthForm redirectTo="/tasks" />);
-  const google = [...container.querySelectorAll("button")].find(
-    (b) => b.textContent === "Continue with Google",
-  )!;
-  expect(google).toBeDefined();
-  await act(async () => google.click());
-  expect(mocks.signIn).toHaveBeenCalledWith({ provider: "google", callbackURL: "/tasks" });
-});
-it("does not offer an unconfigured Google provider", async () => {
+it("offers Discord login and preserves the requested post-login destination", async () => {
   mocks.providers.mockResolvedValue([{ id: "discord", displayName: "Discord" }]);
-  await render(<UserAuthForm />);
-  expect(container.textContent).not.toContain("Google");
-  expect(container.textContent).toContain("Continue with Discord");
+  await render(<UserAuthForm redirectTo="/tasks" />);
+  const discord = [...container.querySelectorAll("button")].find(
+    (b) => b.textContent === "Continue with Discord",
+  )!;
+  expect(discord).toBeDefined();
+  await act(async () => discord.click());
+  expect(mocks.signIn).toHaveBeenCalledWith({ provider: "discord", callbackURL: "/tasks" });
 });
 it("renders nothing when no social providers are configured", async () => {
   mocks.providers.mockResolvedValue([]);
   await render(<UserAuthForm />);
   expect(container.innerHTML).toBe("");
 });
-it("lets existing users link Google and returns them to Account settings", async () => {
-  mocks.providers.mockResolvedValue([{ id: "google", displayName: "Google" }]);
+it("lets existing users link Discord and returns them to Account settings", async () => {
+  mocks.providers.mockResolvedValue([{ id: "discord", displayName: "Discord" }]);
   await render(<LinkedAccounts />);
   const link = container.querySelector<HTMLButtonElement>(
-    'button[aria-label="Link Google account"]',
+    'button[aria-label="Link Discord account"]',
   )!;
   expect(link).not.toBeNull();
   await act(async () => link.click());
-  expect(mocks.link).toHaveBeenCalledWith({ provider: "google", callbackURL: "/account" });
+  expect(mocks.link).toHaveBeenCalledWith({ provider: "discord", callbackURL: "/account" });
 });

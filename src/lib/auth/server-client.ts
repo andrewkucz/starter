@@ -6,16 +6,8 @@ import { ENV } from "varlock/env";
 import { ac, roles } from "@/lib/auth/permissions";
 import { db } from "@/db";
 
-// Social providers are optional; each is enabled when its credentials are configured.
+// Discord sign-in is optional; it is enabled when its credentials are configured.
 const socialProviders = {
-  ...(ENV.GOOGLE_CLIENT_ID &&
-    ENV.GOOGLE_CLIENT_SECRET && {
-      google: {
-        clientId: ENV.GOOGLE_CLIENT_ID,
-        clientSecret: ENV.GOOGLE_CLIENT_SECRET,
-        prompt: "select_account" as const,
-      },
-    }),
   ...(ENV.DISCORD_CLIENT_ID &&
     ENV.DISCORD_CLIENT_SECRET && {
       discord: {

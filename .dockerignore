@@ -1,0 +1,15 @@
+**/node_modules
+**/dist
+**/.output
+**/.nitro
+.git
+.pnpm-store
+.tanstack
+.vscode
+.DS_Store
+tmp
+
+# Local env files can hold credentials; containers resolve config from the committed files.
+.env
+**/.env.local
+**/.env.*.local

@@ -1,0 +1,23 @@
+allowBuilds:
+  msgpackr-extract: false
+  esbuild: true
+  lightningcss: true
+  sharp: true
+  better-sqlite3: true
+  "@prisma/client": false
+  "@prisma/engines": false
+  prisma: false
+onlyBuiltDependencies:
+  - esbuild
+  - lightningcss
+  - sharp
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+overrides:
+  vite@*: "catalog:"
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"

@@ -1,0 +1,39 @@
+import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+
+import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
+import { getContext } from "@/lib/server/context";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { createQueryPersistOptions } from "@/lib/tanstack-query/persistence";
+
+export function getRouter() {
+  const context = getContext();
+  const persistOptions = createQueryPersistOptions();
+
+  const router = createTanStackRouter({
+    routeTree,
+    context,
+    scrollRestoration: true,
+    defaultPreload: "intent",
+    defaultPreloadStaleTime: 0,
+    Wrap: ({ children }) => (
+      <PersistQueryClientProvider client={context.queryClient} persistOptions={persistOptions}>
+        {children}
+      </PersistQueryClientProvider>
+    ),
+  });
+
+  setupRouterSsrQueryIntegration({
+    router,
+    queryClient: context.queryClient,
+    wrapQueryClient: false,
+  });
+
+  return router;
+}
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: ReturnType<typeof getRouter>;
+  }
+}

@@ -8,6 +8,7 @@ import { nitro } from "nitro/vite";
 
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import { varlockVitePlugin } from "@varlock/vite-integration";
 
 // Release tags are cut from package.json by `bumpp`, so its version matches the latest tag
 // (and `.git` is not available inside the Docker build).
@@ -46,9 +47,6 @@ export default defineConfig({
   },
   resolve: { tsconfigPaths: true },
   plugins: lazyPlugins(async () => {
-    // Dynamic import: the varlock plugin resolves env (incl. Infisical) as soon as its module is
-    // imported, so a static import would do that for metadata-only commands (lint, fmt, staged).
-    const { varlockVitePlugin } = await import("@varlock/vite-integration");
     return [
       // `init-only`: the production server is started via `varlock run` (see the `start` script),
       // which resolves env before any SSR chunk evaluates.

@@ -12,7 +12,7 @@
     "services:up": "bin/local-services.sh",
     "db:generate": "drizzle-kit generate --config config/drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config config/drizzle.config.ts",
-    "gen:auth": "APP_ENV=test auth generate --config src/lib/auth/server-client.ts --output ./src/db/auth.schema.ts --yes",
+    "auth:generate": "varlock run -- auth generate --config src/lib/auth/server-client.ts --output ./src/db/auth.schema.ts --yes",
     "prepare": "vp config",
     "env:check": "varlock load",
     "knip": "knip --config config/knip.json",

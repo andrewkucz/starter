@@ -41,6 +41,11 @@ export const auth = betterAuth({
   advanced: {
     // Namespaced so apps sharing a host (e.g. localhost) don't share auth cookies.
     cookiePrefix: "acme",
+    ipAddress: {
+      // Used for rate limiting. Dokploy's Traefik replaces any client-sent X-Forwarded-For with the
+      // real client IP. If a CDN sits in front (e.g. Cloudflare), use its header (`cf-connecting-ip`).
+      ipAddressHeaders: ["x-forwarded-for"],
+    },
   },
   plugins: [admin({ ac, roles, defaultRole: "user" }), tanstackStartCookies()],
 });

@@ -37,7 +37,17 @@ export default defineConfig({
       tanstackStart(),
       // Nitro's dev server is unnecessary during Vitest and changes module loading.
       !process.env.VITEST &&
-        nitro({ preset: "node-server", plugins: ["./src/lib/server/run-migrations.ts"] }),
+        nitro({
+          preset: "node-server",
+          // Prefer ESM builds that tree-shake. Without it, lucide-react resolves to its CJS build
+          // via the `node` condition, and every icon ends up in the server bundle (~1MB).
+          exportConditions: ["module"],
+          // Run in order on startup, before requests are served.
+          plugins: [
+            "./src/lib/server/plugins/migrate.ts",
+            "./src/lib/server/plugins/promote-admins.ts",
+          ],
+        }),
       viteReact(),
     ];
   }),

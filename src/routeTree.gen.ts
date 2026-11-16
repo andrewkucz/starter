@@ -21,6 +21,7 @@ import { Route as AppAuthRouteRouteImport } from './routes/_app/_auth/route'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedTasksRouteImport } from './routes/_authenticated/tasks'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as AppAuthAuthErrorRouteImport } from './routes/_app/_auth/auth-error'
 import { Route as AppAuthSignInRouteImport } from './routes/_app/_auth/sign-in'
 import { Route as AppAuthSignUpRouteImport } from './routes/_app/_auth/sign-up'
@@ -85,6 +86,11 @@ const AuthenticatedTasksRoute = AuthenticatedTasksRouteImport.update({
   path: '/tasks',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppAuthAuthErrorRoute = AppAuthAuthErrorRouteImport.update({
   id: '/auth-error',
   path: '/auth-error',
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AuthenticatedAccountRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/api/health': typeof ApiHealthRoute
   '/auth-error': typeof AppAuthAuthErrorRoute
   '/sign-in': typeof AppAuthSignInRoute
   '/sign-up': typeof AppAuthSignUpRoute
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/account': typeof AuthenticatedAccountRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/api/health': typeof ApiHealthRoute
   '/auth-error': typeof AppAuthAuthErrorRoute
   '/sign-in': typeof AppAuthSignInRoute
   '/sign-up': typeof AppAuthSignUpRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/tasks': typeof AuthenticatedTasksRoute
+  '/api/health': typeof ApiHealthRoute
   '/_app/': typeof AppIndexRoute
   '/_app/_auth/auth-error': typeof AppAuthAuthErrorRoute
   '/_app/_auth/sign-in': typeof AppAuthSignInRoute
@@ -184,6 +193,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/dashboard'
     | '/tasks'
+    | '/api/health'
     | '/auth-error'
     | '/sign-in'
     | '/sign-up'
@@ -201,6 +211,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/dashboard'
     | '/tasks'
+    | '/api/health'
     | '/auth-error'
     | '/sign-in'
     | '/sign-up'
@@ -220,6 +231,7 @@ export interface FileRouteTypes {
     | '/_authenticated/account'
     | '/_authenticated/dashboard'
     | '/_authenticated/tasks'
+    | '/api/health'
     | '/_app/'
     | '/_app/_auth/auth-error'
     | '/_app/_auth/sign-in'
@@ -237,6 +249,7 @@ export interface RootRouteChildren {
   R404Route: typeof R404Route
   R500Route: typeof R500Route
   R503Route: typeof R503Route
+  ApiHealthRoute: typeof ApiHealthRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -325,6 +338,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/tasks'
       preLoaderRoute: typeof AuthenticatedTasksRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_app/_auth/auth-error': {
       id: '/_app/_auth/auth-error'
@@ -428,6 +448,7 @@ const rootRouteChildren: RootRouteChildren = {
   R404Route: R404Route,
   R500Route: R500Route,
   R503Route: R503Route,
+  ApiHealthRoute: ApiHealthRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

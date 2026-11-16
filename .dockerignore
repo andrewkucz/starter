@@ -12,4 +12,3 @@ tmp
 **/.env
 **/.env.local
 **/.env.*.local
-.varlock-frozen-env

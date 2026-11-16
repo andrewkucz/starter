@@ -36,7 +36,8 @@ export default defineConfig({
       tailwindcss(),
       tanstackStart(),
       // Nitro's dev server is unnecessary during Vitest and changes module loading.
-      !process.env.VITEST && nitro({ preset: "node-server" }),
+      !process.env.VITEST &&
+        nitro({ preset: "node-server", plugins: ["./src/lib/server/run-migrations.ts"] }),
       viteReact(),
     ];
   }),

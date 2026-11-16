@@ -19,13 +19,28 @@ if [[ ! "$app_slug" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
   exit 1
 fi
 
+read -rp "Infisical project ID (blank to set later in config/env/.env.production): " infisical_project_id
+if [[ -n "$infisical_project_id" && ! "$infisical_project_id" =~ ^[A-Za-z0-9-]+$ ]]; then
+  echo "Infisical project ID must contain only letters, numbers, and hyphens." >&2
+  exit 1
+fi
+
 cd "$project_root"
+
+if [[ -n "$infisical_project_id" ]]; then
+  INFISICAL_PROJECT_ID="$infisical_project_id" \
+    perl -pi -e 's/^INFISICAL_PROJECT_ID=.*$/INFISICAL_PROJECT_ID=$ENV{INFISICAL_PROJECT_ID}/' config/env/.env.production
+  echo "Set INFISICAL_PROJECT_ID in config/env/.env.production"
+fi
 
 if [[ -f README.md ]]; then
   perl -0pi -e 's/<!-- init:start -->.*?<!-- init:end -->\n//s' README.md
 fi
 
-mapfile -d '' files < <(git grep -lzI --untracked -e Acme -e acme -- ':!bin/init.sh' || true)
+files=()
+while IFS= read -r -d '' file; do
+  files+=("$file")
+done < <(git grep -lzI --untracked -e Acme -e acme -- ':!bin/init.sh' || true)
 
 if ((${#files[@]} > 0)); then
   APP_NAME="$app_name" APP_SLUG="$app_slug" \

@@ -10,7 +10,7 @@ This repo uses `Acme` / `acme` as placeholder names. Before doing anything else,
 bin/init.sh
 ```
 
-It asks for your application name and slug, replaces every placeholder in the repo, removes this section, and deletes itself.
+It asks for your application name, slug and Infisical project ID, replaces every placeholder in the repo, removes this section, and deletes itself.
 
 <!-- init:end -->
 
@@ -26,6 +26,14 @@ vp dev                # start the dev server
 ```
 
 Run `vp check` and `vp test` before committing.
+
+### Scripts
+
+To run a standalone script with the app's env loaded (so `ENV` from `varlock/env` works and `@/` imports resolve), preload Varlock:
+
+```sh
+vpx --import varlock/auto-load ./bin/test.ts
+```
 
 ## Deployment
 

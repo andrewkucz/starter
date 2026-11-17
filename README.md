@@ -41,6 +41,7 @@ vpx --import varlock/auto-load ./bin/test.ts
 
 - Set `INFISICAL_PROJECT_ID` in `config/env/.env.production`.
 - Set `INFISICAL_CLIENT_ID` and `INFISICAL_CLIENT_SECRET` (identity with access to Infisical `prod`), `POSTGRES_PASSWORD` and `VARLOCK_ENV_KEY` (`varlock generate-key --plain`) in the deploy environment.
+- `VARLOCK_ENV_KEY` is required. The Dockerfile mounts it into the build as `_VARLOCK_ENV_KEY`, because the Varlock Vite plugin only reads the underscore-prefixed name, Varlock's convention for its own internal vars. Don't "fix" the underscore. At runtime either name works.
 - Route the domain to `web` on port 3000 and keep `BETTER_AUTH_URL` in `config/env/.env.production` in sync.
 - Config is resolved and encrypted during the image build, so secret changes take effect on redeploy, not restart. Rotating `VARLOCK_ENV_KEY` means older images can no longer start, so you can't roll back to them.
 - Pending migrations run when `web` starts; requests wait until they finish.

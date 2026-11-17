@@ -13,7 +13,6 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
 FROM deps AS build
 ENV APP_ENV=production
 COPY . .
-# The Vite plugin reads the key from the underscore-prefixed `_VARLOCK_ENV_KEY` name only.
 RUN --mount=type=secret,id=infisical_client_id,env=INFISICAL_CLIENT_ID,required=true \
   --mount=type=secret,id=infisical_client_secret,env=INFISICAL_CLIENT_SECRET,required=true \
   --mount=type=secret,id=postgres_password,env=POSTGRES_PASSWORD,required=true \

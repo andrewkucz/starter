@@ -19,26 +19,6 @@ if [[ ! "$app_slug" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
   exit 1
 fi
 
-# Prompts with an editable, pre-filled default; Enter accepts it as-is.
-read_with_default() {
-  local prompt="$1" default="$2" reply
-  if ((BASH_VERSINFO[0] >= 4)); then
-    read -rep "$prompt" -i "$default" reply
-  elif command -v zsh >/dev/null; then
-    reply="$(zsh -c 'value=$2; vared -p "$1" value; print -r -- "$value"' _ "$prompt" "$default")"
-  else
-    read -rp "${prompt}[$default] " reply
-    reply="${reply:-$default}"
-  fi
-  printf '%s' "$reply"
-}
-
-app_domain="$(read_with_default "Production domain: " "$app_slug.com")"
-if [[ ! "$app_domain" =~ ^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$ ]]; then
-  echo "Domain must be a lowercase hostname like my-app.com (no protocol or path)." >&2
-  exit 1
-fi
-
 read -rp "Infisical project ID (blank to set later in config/env/.env.production): " infisical_project_id
 if [[ -n "$infisical_project_id" && ! "$infisical_project_id" =~ ^[A-Za-z0-9-]+$ ]]; then
   echo "Infisical project ID must contain only letters, numbers, and hyphens." >&2
@@ -69,10 +49,6 @@ if ((${#files[@]} > 0)); then
 else
   echo "No occurrences of Acme/acme found."
 fi
-
-APP_DOMAIN="$app_domain" \
-  perl -pi -e 's/^BETTER_AUTH_URL=.*$/BETTER_AUTH_URL=https:\/\/$ENV{APP_DOMAIN}/' config/env/.env.production
-echo "Set BETTER_AUTH_URL to https://$app_domain in config/env/.env.production"
 
 rm -- "$script_path"
 echo "Done. Removed bin/init.sh."

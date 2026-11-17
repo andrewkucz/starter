@@ -3,6 +3,8 @@ services:
     build:
       context: .
       # Only these values reach the build; everything else comes from committed env files and Infisical.
+      args:
+        VITE_PUBLIC_URL: ${VITE_PUBLIC_URL:?}
       secrets:
         - infisical_client_id
         - infisical_client_secret

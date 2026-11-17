@@ -12,6 +12,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
 
 FROM deps AS build
 ENV APP_ENV=production
+ARG VITE_PUBLIC_URL
 COPY . .
 RUN --mount=type=secret,id=infisical_client_id,env=INFISICAL_CLIENT_ID,required=true \
   --mount=type=secret,id=infisical_client_secret,env=INFISICAL_CLIENT_SECRET,required=true \

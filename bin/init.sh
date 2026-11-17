@@ -27,9 +27,9 @@ fi
 
 cd "$project_root"
 
+INFISICAL_PROJECT_ID="$infisical_project_id" \
+  perl -pi -e 's/^INFISICAL_PROJECT_ID=.*$/INFISICAL_PROJECT_ID=$ENV{INFISICAL_PROJECT_ID}/' config/env/.env.production
 if [[ -n "$infisical_project_id" ]]; then
-  INFISICAL_PROJECT_ID="$infisical_project_id" \
-    perl -pi -e 's/^INFISICAL_PROJECT_ID=.*$/INFISICAL_PROJECT_ID=$ENV{INFISICAL_PROJECT_ID}/' config/env/.env.production
   echo "Set INFISICAL_PROJECT_ID in config/env/.env.production"
 fi
 

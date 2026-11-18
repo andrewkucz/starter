@@ -328,9 +328,6 @@ importers:
       '@tanstack/devtools-vite':
         specifier: 0.8.6
         version: 0.8.6(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@voidzero-dev/vite-plus-core@1.6.0(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(typescript@7.0.2)(yaml@2.9.1))
-      '@tanstack/router-cli':
-        specifier: ^1.168.0
-        version: 1.168.0(supports-color@10.2.2)
       '@types/pg':
         specifier: ^8.23.1
         version: 8.23.1
@@ -2489,11 +2486,6 @@ packages:
     peerDependencies:
       react: '>=18'
 
-  '@tanstack/router-cli@1.168.0':
-    resolution: {integrity: sha512-bjonksrARN9TUQYZo0bZO41fQq8EfFNfh/WAuax0NmZJHghHcp+FQegSdUjjTsTwp9SlokLju1Gbwzyp7dmvCw==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    hasBin: true
-
   '@tanstack/router-core@1.171.39':
     resolution: {integrity: sha512-qUhoJ0meuSUqGYQbHbcJYdASr06YtK+bulbj6vtrhKYFkLgkSsZ6tXmMyym7sFxiSJSPYgasgozrL01LyyR/6A==}
     engines: {node: '>=20.19'}
@@ -3220,10 +3212,6 @@ packages:
 
   cac@7.0.1:
     resolution: {integrity: sha512-86diuUyeeWM8CrqhpGCaDafrzjS1s++7sWy2AbAPoFNz/xKv7ID57CR4pZsMuGCh60PtsnEx4z68b+Vgt07VPw==}
-    engines: {node: '>=20.19.0'}
-
-  cac@7.1.0:
-    resolution: {integrity: sha512-LMDU/U2yA4IPIY8KT0NsNPWEYZvAMkbgyspxJ6btJaYV+WMDOHAZCmB0lsTObiHaRS1V/ztKAl7+TSkTqXyeoA==}
     engines: {node: '>=20.19.0'}
 
   caniuse-lite@1.0.30001809:
@@ -6324,14 +6312,6 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@tanstack/router-cli@1.168.0(supports-color@10.2.2)':
-    dependencies:
-      '@tanstack/router-generator': 1.168.0(supports-color@10.2.2)
-      cac: 7.1.0
-      chokidar: 5.0.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@tanstack/router-core@1.171.39':
     dependencies:
       '@tanstack/history': 1.162.5
@@ -6971,7 +6951,7 @@ snapshots:
       confbox: 0.2.4
       defu: 6.1.7
       dotenv: 16.6.1
-      exsolve: 1.1.1
+      exsolve: 1.2.0
       giget: 2.0.0
       jiti: 2.7.0
       ohash: 2.0.12
@@ -6995,8 +6975,6 @@ snapshots:
       jiti: 2.7.0
 
   cac@7.0.1: {}
-
-  cac@7.1.0: {}
 
   caniuse-lite@1.0.30001809: {}
 

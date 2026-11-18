@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "generate-routes": "tsr generate",
     "build": "vp build",
     "start": "node .output/server/index.mjs",
     "preview": "vp preview",
@@ -57,7 +56,6 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.20",
     "@tanstack/devtools-vite": "0.8.6",
-    "@tanstack/router-cli": "^1.168.0",
     "@types/pg": "^8.23.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
